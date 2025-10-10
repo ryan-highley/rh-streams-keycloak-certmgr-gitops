@@ -1,0 +1,4 @@
+namespace: openshift-operators
+
+resources:
+  - Subscription_crunchy-postgres-operator.yaml

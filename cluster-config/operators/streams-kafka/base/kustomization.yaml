@@ -1,0 +1,4 @@
+namespace: openshift-operators
+
+resources:
+  - Subscription_amq-streams.yaml
