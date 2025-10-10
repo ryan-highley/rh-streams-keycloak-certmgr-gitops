@@ -1,0 +1,6 @@
+namespace: cert-manager
+
+resources:
+  - Certificate_rootca.yaml
+  - ClusterIssuer_self-signer.yaml
+  - ClusterIssuer_signer.yaml

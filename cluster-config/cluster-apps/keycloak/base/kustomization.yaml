@@ -1,0 +1,5 @@
+namespace: keycloak
+
+resources:
+  - Certificate_keycloak-tls-secret.yaml
+  - Keycloak_keycloak.yaml
