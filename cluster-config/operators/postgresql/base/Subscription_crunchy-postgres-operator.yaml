@@ -2,11 +2,11 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
   labels:
-    operators.coreos.com/cloud-native-postgresql.openshift-operators: ''
-  name: cloud-native-postgresql
+    operators.coreos.com/crunchy-postgres-operator.openshift-operators: ''
+  name: crunchy-postgres-operator
 spec:
-  channel: stable-v1.24
+  channel: v5
   installPlanApproval: Automatic
-  name: cloud-native-postgresql
+  name: crunchy-postgres-operator
   source: certified-operators
   sourceNamespace: openshift-marketplace
