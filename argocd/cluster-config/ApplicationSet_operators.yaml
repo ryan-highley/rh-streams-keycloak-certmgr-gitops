@@ -3,6 +3,9 @@ kind: ApplicationSet
 metadata:
   name: operators
 spec:
+  goTemplate: true
+  goTemplateOptions:
+    - missingkey=error
   generators:
     - list:
         elements:
