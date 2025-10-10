@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: security
+spec:
+  generators:
+    - list:
+        elements:
+          - name: htpass-auth
+            path: cluster-config/security/htpass-auth
+          - name: rbac
+            path: cluster-config/security/rbac
+  template:
+    metadata:
+      name: 'security-{{.name}}'
+    spec:
+      project: cluster-config
+      source:
+        path: '{{.path}}'
+        repoURL: https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops
+      destination:
+        namespace: openshift-gitops
+        server: https://kubernetes.default.svc
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

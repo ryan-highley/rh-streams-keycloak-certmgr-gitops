@@ -1,0 +1,2 @@
+resources:
+  - Subscription_amq-broker-rhel9.yaml

@@ -1,0 +1,5 @@
+resources:
+  - Project_openshift-gitops-operator.yaml
+  - OperatorGroup_openshift-gitops-operator.yaml
+  - Subscription_openshift-gitops-operator.yaml
+  - ../argocd/profiles/default

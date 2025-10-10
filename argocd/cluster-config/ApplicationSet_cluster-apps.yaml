@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cluster-apps
+spec:
+  generators:
+    - list:
+        elements:
+          - name: cert-manager
+            path: cluster-config/cluster-apps/cert-manager/overlays/default
+          - name: keycloak
+            path: cluster-config/cluster-apps/keycloak/overlays/default
+  template:
+    metadata:
+      name: 'cluster-apps-{{.name}}'
+    spec:
+      project: cluster-config
+      source:
+        path: '{{.path}}'
+        repoURL: https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops
+      destination:
+        namespace: openshift-gitops
+        server: https://kubernetes.default.svc
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: operators
+spec:
+  generators:
+    - list:
+        elements:
+          - name: amq-broker
+            path: cluster-config/operators/amq-broker/overlays/default
+          - name: cert-manager
+            path: cluster-config/operators/cert-manager/overlays/default
+          - name: keycloak
+            path: cluster-config/operators/keycloak/overlays/default
+          - name: postgresql
+            path: cluster-config/operators/postgresql/overlays/default
+          - name: streams-kafka
+            path: cluster-config/operators/streams-kafka/overlays/default
+  template:
+    metadata:
+      name: 'operators-{{.name}}'
+    spec:
+      project: cluster-config
+      source:
+        path: '{{.path}}'
+        repoURL: https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops
+      destination:
+        namespace: openshift-gitops
+        server: https://kubernetes.default.svc
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
