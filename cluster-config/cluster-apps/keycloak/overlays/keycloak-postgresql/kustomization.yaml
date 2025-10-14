@@ -1,3 +1,5 @@
+namespace: keycloak
+
 resources:
   - ../default
   - Secret_postgresql-credentials.yaml
