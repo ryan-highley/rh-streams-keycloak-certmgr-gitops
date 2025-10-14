@@ -15,6 +15,9 @@ spec:
       containers:
         - name: postgresql-db
           image: postgres:16
+          ports:
+            - containerPort: 5432
+              protocol: TCP
           volumeMounts:
             - mountPath: /data
               name: data-volume
