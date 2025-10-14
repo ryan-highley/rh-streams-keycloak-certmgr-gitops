@@ -1,0 +1,4 @@
+namespace: openshift-operators
+
+resources:
+  - Subscription_apicurio-registry-3.yaml

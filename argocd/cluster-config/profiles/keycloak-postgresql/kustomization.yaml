@@ -1,5 +1,5 @@
 resources:
-  - ../../cluster-config
+  - ../../base
 
 patches:
   - target:
@@ -8,7 +8,7 @@ patches:
     patch: |-
       - op: replace
         path: /spec/source/path
-        value: argocd/profiles/keycloak-postgresql
+        value: argocd/cluster-config/profiles/keycloak-postgresql
   - target:
       kind: ApplicationSet
       name: cluster-apps

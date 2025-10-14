@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: movies-app
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: openshift-gitops
+    server: https://kubernetes.default.svc
+  project: movies-app
+  source:
+    path: app-config/streams-kafka/overlays/multi-cluster-kafka/movies-app
+    repoURL: https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
