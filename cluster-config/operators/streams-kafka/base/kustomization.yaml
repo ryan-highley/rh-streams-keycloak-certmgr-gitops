@@ -2,3 +2,4 @@ namespace: openshift-operators
 
 resources:
   - Subscription_amq-streams.yaml
+  - Subscription_amq-streams-console.yaml
