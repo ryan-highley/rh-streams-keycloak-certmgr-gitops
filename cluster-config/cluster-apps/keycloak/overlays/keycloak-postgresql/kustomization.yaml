@@ -1,0 +1,4 @@
+resources:
+  - ../default
+  - Secret_postgresql-credentials.yaml
+  - Deployment_postgresql-db.yaml

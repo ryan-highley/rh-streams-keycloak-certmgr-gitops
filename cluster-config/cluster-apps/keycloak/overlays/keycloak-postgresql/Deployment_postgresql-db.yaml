@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgresql-db
+spec:
+  selector:
+    matchLabels:
+      app: postgresql-db
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: postgresql-db
+    spec:
+      containers:
+        - name: postgresql-db
+          image: postgres:16
+          volumeMounts:
+            - mountPath: /data
+              name: data-volume
+          envFrom:
+            - secretRef:
+                name: postgresql-credentials
+                optional: false
+          env:
+            - name: PGDATA
+              value: /data/pgdata
+            - name: POSTGRES_DB
+              value: keycloak
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 250m
+            limits:
+              memory: 512Mi
+              cpu: '1'
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: postgresql-db-data
