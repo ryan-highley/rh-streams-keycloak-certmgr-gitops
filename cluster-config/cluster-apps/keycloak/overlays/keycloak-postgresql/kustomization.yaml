@@ -5,6 +5,7 @@ resources:
   - Secret_postgresql-credentials.yaml
   - PersistentVolumeClaim_postgresql-db-data.yaml
   - Deployment_postgresql-db.yaml
+  - Service_postgresql-db.yaml
 
 patches:
   - target:
@@ -15,7 +16,7 @@ patches:
         path: /spec/db
         value:
           vendor: postgres
-          host: postgres-db
+          host: postgresql-db.keycloak.svc
           usernameSecret:
             name: postgresql-credentials
             key: POSTGRES_USER
