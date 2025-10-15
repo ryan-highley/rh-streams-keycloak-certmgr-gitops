@@ -3,14 +3,14 @@ kind: AppProject
 metadata:
   name: music-app
 spec:
-  clusterResourceWhitelist:
-    - group: '*'
-      kind: '*'
+  clusterResourceWhitelist: []
   namespaceResourceWhitelist:
     - group: '*'
       kind: '*'
   destinations:
-    - namespace: '*'
-      server: '*'
+    - namespace: 'music-app'
+      server: https://kubernetes.default.svc
+    - namespace: 'music-app-kafka'
+      server: https://kubernetes.default.svc
   sourceRepos:
     - '*'
