@@ -10,9 +10,38 @@ spec:
     server: https://kubernetes.default.svc
   project: music-app
   source:
-    path: app-config/streams-kafka/overlays/multi-cluster-kafka/music-app
+    path: app-config/streams-kafka
     repoURL: https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops
+    helm:
+      namespace: music-app-kafka
+      releaseName: music-app
+      valuesObject:
+        cluster:
+          name: music-app-broker
+        topics:
+          - name: albums
+            spec:
+              replicas: 3
+              partitions: 12
+          - name: artists
+            spec:
+              replicas: 3
+              partitions: 24
+          - name: bands
+            spec:
+              replicas: 3
+              partitions: 12
+          - name: producers
+            spec:
+              replicas: 3
+              partitions: 24
+          - name: songs
+            spec:
+              replicas: 3
+              partitions: 48
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

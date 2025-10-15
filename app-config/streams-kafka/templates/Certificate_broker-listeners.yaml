@@ -1,0 +1,17 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: broker-listeners
+spec:
+  secretName: cert-broker-secret
+  issuerRef:
+    name: signer
+    kind: ClusterIssuer
+  commonName: {{ .Values.cluster.name }}-kafka
+  dnsNames:
+  - '*.{{ .Values.cluster.name }}-kafka-brokers'
+  - '*.{{ .Values.cluster.name }}-kafka-brokers.{{ .Release.Namespace }}.svc'
+  - '*.{{ .Values.cluster.name }}-kafka-brokers.{{ .Release.Namespace }}.svc.cluster.local'
+  - {{ .Values.cluster.name }}-kafka-bootstrap
+  - {{ .Values.cluster.name }}-kafka-bootstrap.{{ .Release.Namespace }}.svc
+  - {{ .Values.cluster.name }}-kafka-bootstrap.{{ .Release.Namespace }}.svc.cluster.local

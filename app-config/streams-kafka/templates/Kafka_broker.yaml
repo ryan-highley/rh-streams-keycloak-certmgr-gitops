@@ -1,0 +1,22 @@
+{{- with .Values.cluster -}}
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: {{ .name }}
+  annotations:
+    strimzi.io/node-pools: enabled
+    strimzi.io/kraft: enabled
+spec:
+  kafka:
+    config:
+      {{- toYaml .config | nindent 6 }}
+    authorization:
+      {{- toYaml .authorization | nindent 6 }}
+    listeners:
+      {{- toYaml .listeners | nindent 6 }}
+    version: {{ .version | default "4.0.0" }}
+    metadataVersion: {{ .metadataVersion | default "4.0-IV3" }}
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}
+{{- end }}
