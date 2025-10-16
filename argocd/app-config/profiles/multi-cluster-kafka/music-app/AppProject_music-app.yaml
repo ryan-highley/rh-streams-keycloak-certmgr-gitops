@@ -3,7 +3,6 @@ kind: AppProject
 metadata:
   name: music-app
 spec:
-  clusterResourceWhitelist: []
   namespaceResourceWhitelist:
     - group: '*'
       kind: '*'

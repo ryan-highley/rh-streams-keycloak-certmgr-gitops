@@ -27,6 +27,12 @@ Wait for the deployment rollout
 oc rollout status deploy/openshift-gitops-server -n openshift-gitops
 ```
 
+Add cluster-admin role to the ArgoCD service account
+
+```shell
+oc adm policy add-cluster-role-to-user cluster-admin -z openshift-gitops-argocd-application-controller -n openshift-gitops
+```
+
 To get the admin password
 
 ```shell

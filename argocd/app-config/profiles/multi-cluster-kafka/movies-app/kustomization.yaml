@@ -1,3 +1,5 @@
 resources:
+  - Namespace_movies-app.yaml
+  - Namespace_movies-app-kafka.yaml
   - AppProject_movies-app.yaml
   - Application_movies-app.yaml
