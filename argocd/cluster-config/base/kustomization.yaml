@@ -3,6 +3,6 @@ namespace: openshift-gitops
 resources:
   - AppProject_cluster-config.yaml
   - Application_cluster-config.yaml
-  # - ApplicationSet_security.yaml
+  - ApplicationSet_security.yaml
   - ApplicationSet_operators.yaml
   - ApplicationSet_cluster-apps.yaml
