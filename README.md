@@ -41,8 +41,9 @@ oc get secret openshift-gitops-cluster -n openshift-gitops -ojsonpath='{.data.ad
 
 ## Deploying this Repo
 
-To configure your cluster to this repo run
+To configure your cluster to this repo run `oc apply` on any available ArgoCD profile directory
 
 ```
-oc apply -k https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops/argocd/profiles/default
+oc apply -k https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops/argocd/cluster-config/profiles/default
+oc apply -k https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops/argocd/app-config/profiles/default
 ```
