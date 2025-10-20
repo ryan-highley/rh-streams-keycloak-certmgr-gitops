@@ -47,3 +47,14 @@ To configure your cluster to this repo run `oc apply` on any available ArgoCD pr
 oc apply -k https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops/argocd/cluster-config/profiles/default
 oc apply -k https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops/argocd/app-config/profiles/default
 ```
+
+## Default users and passwords
+
+| User | Password | Permissions |
+| ---- | ---- | ---- |
+| admin | `r3dh4t1!` | `cluster-admin` |
+| developer | `developer` | None |
+
+Replace the base64-encoded `htpasswd` contents in `cluster-config/security/htpass-auth/Secret_htpass-secret.yaml` to change passwords and/or available users.
+
+Replace the contents of `cluster-config/security/rbac` to change group membership and/or role bindings.
