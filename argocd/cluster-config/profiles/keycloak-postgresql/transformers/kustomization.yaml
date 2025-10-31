@@ -1,0 +1,2 @@
+resources:
+  - PatchTransformer_cluster-apps-patch.yaml

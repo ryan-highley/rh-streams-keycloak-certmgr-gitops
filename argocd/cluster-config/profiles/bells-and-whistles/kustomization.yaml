@@ -8,7 +8,8 @@ patches:
     patch: |-
       - op: replace
         path: /spec/source/path
-        value: argocd/cluster-config/profiles/keycloak-postgresql
+        value: argocd/cluster-config/profiles/bells-and-whistles
 
 transformers:
-  - transformers/
+  - ../keycloak-postgresql/transformers/
+  - ../cert-manager-custom-ca/transformers/

@@ -1,0 +1,16 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: custom-ca-cluster-apps-patch.yaml
+target:
+  kind: ApplicationSet
+  name: cluster-apps
+patch: |-
+  # Test that element 0 has the name 'cert-manager'
+  - op: test
+    path: /spec/generators/0/list/elements/0/name
+    value: cert-manager
+  # Replace the path of element 0
+  - op: replace
+    path: /spec/generators/0/list/elements/0/path
+    value: cluster-config/cluster-apps/cert-manager/overlays/custom-ca

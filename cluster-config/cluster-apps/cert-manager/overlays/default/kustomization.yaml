@@ -1,2 +1,6 @@
+namespace: cert-manager
+
 resources:
+  - Certificate_cluster-ca.yaml
+  - ClusterIssuer_self-signer.yaml
   - ../../base

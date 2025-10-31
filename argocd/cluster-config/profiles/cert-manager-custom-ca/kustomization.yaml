@@ -8,7 +8,7 @@ patches:
     patch: |-
       - op: replace
         path: /spec/source/path
-        value: argocd/cluster-config/profiles/keycloak-postgresql
+        value: argocd/cluster-config/profiles/cert-manager-custom-ca
 
 transformers:
   - transformers/
