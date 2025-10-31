@@ -5,8 +5,8 @@ metadata:
 spec:
   secretName: cert-broker-secret
   issuerRef:
-    name: signer
-    kind: ClusterIssuer
+    name: {{ .Values.cluster.name }}-cert-issuer
+    kind: Issuer
   commonName: {{ .Values.cluster.name }}-kafka
   dnsNames:
   - '*.{{ .Values.cluster.name }}-kafka-brokers'
