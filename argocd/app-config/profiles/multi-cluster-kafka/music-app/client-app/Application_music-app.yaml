@@ -1,14 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: movies-app
+  name: music-app
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: movies-app
+    namespace: music-app
     server: https://kubernetes.default.svc
-  project: movies-app
+  project: music-app
+  source:
+    path: argocd/app-config/profiles/multi-cluster-kafka/music-app/client-app
+    repoURL: https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops
   syncPolicy:
     automated:
       prune: true
