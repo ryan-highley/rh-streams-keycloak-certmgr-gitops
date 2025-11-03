@@ -39,6 +39,8 @@ spec:
             spec:
               replicas: 3
               partitions: 48
+        clientApp:
+          namespace: music-app
   syncPolicy:
     automated:
       prune: true

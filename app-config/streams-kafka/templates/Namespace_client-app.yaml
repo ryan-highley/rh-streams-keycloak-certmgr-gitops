@@ -1,0 +1,6 @@
+{{ if .Values.clientApp.namespace }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.clientApp.namespace }}
+{{ end }}

@@ -83,3 +83,7 @@ topics:
     spec:
       replicas: 3
       partitions: 6
+
+clientApp:
+  namespace: kafka-client-app
+  networkPolicy: {}

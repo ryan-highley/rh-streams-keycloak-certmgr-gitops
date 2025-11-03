@@ -1,5 +1,3 @@
 resources:
-  - Namespace_music-app.yaml
-  - Namespace_music-app-kafka.yaml
   - AppProject_music-app.yaml
   - Application_music-app.yaml

@@ -39,6 +39,8 @@ spec:
             spec:
               replicas: 3
               partitions: 24
+        clientApp:
+          namespace: movies-app
   syncPolicy:
     automated:
       prune: true
