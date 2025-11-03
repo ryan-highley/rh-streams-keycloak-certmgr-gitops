@@ -1,3 +1,4 @@
 resources:
   - AppProject_movies-app.yaml
   - Application_movies-app.yaml
+  - Application_movies-app-kafka.yaml

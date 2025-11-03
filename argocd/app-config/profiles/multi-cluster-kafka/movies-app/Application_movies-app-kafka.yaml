@@ -1,0 +1,49 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: movies-app-kafka
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: movies-app-kafka
+    server: https://kubernetes.default.svc
+  project: movies-app
+  source:
+    path: app-config/streams-kafka
+    repoURL: https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops
+    helm:
+      namespace: movies-app-kafka
+      releaseName: movies-app
+      valuesObject:
+        cluster:
+          name: movies-app-broker
+        topics:
+          - name: actors
+            spec:
+              replicas: 3
+              partitions: 12
+          - name: directors
+            spec:
+              replicas: 3
+              partitions: 6
+          - name: movies
+            spec:
+              replicas: 3
+              partitions: 6
+          - name: producers
+            spec:
+              replicas: 3
+              partitions: 12
+          - name: stunts
+            spec:
+              replicas: 3
+              partitions: 24
+        clientApp:
+          namespace: movies-app
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

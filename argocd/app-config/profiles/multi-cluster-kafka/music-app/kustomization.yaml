@@ -1,3 +1,4 @@
 resources:
   - AppProject_music-app.yaml
   - Application_music-app.yaml
+  - Application_music-app-kafka.yaml
