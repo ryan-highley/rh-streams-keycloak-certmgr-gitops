@@ -11,7 +11,7 @@ spec:
     server: https://kubernetes.default.svc
   project: music-app
   source:
-    path: argocd/app-config/profiles/multi-cluster-kafka/music-app/client-app
+    path: app-config/kafka-client
     repoURL: https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops
   syncPolicy:
     automated:
