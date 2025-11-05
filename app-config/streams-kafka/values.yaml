@@ -1,47 +1,47 @@
 
 cluster:
   name: broker
+  # authorization:
+  #   type: simple
   authorization:
-    type: simple
-# authorization:
-#   type: keycloak
-#   tokenEndpointUri: https://keycloak-keycloak.svc.cluster.local/auth/realms/kafka/protocol/openid-connect/token
-#   delegateToKafkaAcls: false
-#   disableTlsHostnameVerification: false
-#   clientId: broker-client
-#   clientSecret:
-#     secretName: broker-client
-#     key: clientSecret
+    type: keycloak
+    tokenEndpointUri: https://keycloak-service.keycloak.svc.cluster.local/auth/realms/kafka/protocol/openid-connect/token
+    delegateToKafkaAcls: false
+    disableTlsHostnameVerification: false
+    clientId: broker-client
+    clientSecret:
+      secretName: broker-client
+      key: clientSecret
   listeners:
-    - name: plain
-      port: 9092
-      type: internal
-      tls: false
+    # - name: plain
+    #   port: 9092
+    #   type: internal
+    #   tls: false
     - name: tls
       port: 9093
       type: internal
       tls: true
       authentication:
         type: tls
-      configuration:
-        brokerCertChainAndKey:
-          secretName: cert-broker-secret
-          certificate: tls.crt
-          key: tls.key
-# - authentication:
-#     type: oauth
-#     enableOauthBearer: true
-#     jwksEndpointUri: https://keycloak-keycloak.svc.cluster.local/auth/realms/kafka/protocol/openid-connect/certs
-#     validIssuerUri: https://keycloak-keycloak.svc.cluster.local/auth/realms/kafka
-#     userNameClaim: azp
-#     clientId: broker-client
-#     clientSecret:
-#       secretName: broker-client
-#       key: clientSecret
-#   name: oauth
-#   port: 9096
-#   tls: true
-#   type: internal
+      # configuration:
+      #   brokerCertChainAndKey:
+      #     secretName: cert-broker-secret
+      #     certificate: tls.crt
+      #     key: tls.key
+    - name: oauth
+      port: 9096
+      type: internal
+      tls: true
+      authentication:
+        type: oauth
+        enableOauthBearer: true
+        jwksEndpointUri: https://keycloak-service.keycloak.svc.cluster.local/auth/realms/kafka/protocol/openid-connect/certs
+        validIssuerUri: https://keycloak-service.keycloak.svc.cluster.local/auth/realms/kafka
+        userNameClaim: azp
+        clientId: broker-client
+        clientSecret:
+          secretName: broker-client
+          key: clientSecret
   config:
     offsets.topic.replication.factor: 3
     transaction.state.log.replication.factor: 3

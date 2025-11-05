@@ -3,13 +3,12 @@ kind: AppProject
 metadata:
   name: movies-app
 spec:
-  namespaceResourceWhitelist:
-    - group: '*'
-      kind: '*'
   destinations:
     - namespace: 'movies-app'
       server: https://kubernetes.default.svc
     - namespace: 'movies-app-kafka'
+      server: https://kubernetes.default.svc
+    - namespace: 'keycloak'
       server: https://kubernetes.default.svc
   sourceRepos:
     - '*'

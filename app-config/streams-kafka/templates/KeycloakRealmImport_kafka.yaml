@@ -1,0 +1,83 @@
+{{- with .Values.cluster -}}
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: KeycloakRealmImport
+metadata:
+  name: {{ .name }}-kafka
+  namespace: keycloak
+  labels:
+    app: {{ .name }}-kafka
+spec:
+  keycloakCRName: keycloak
+  realm:
+    id: {{ .name }}-kafka
+    realm: {{ .name }}-kafka
+    displayName: {{ .name }} Kafka Realm
+    enabled: true
+    sslRequired: none
+    roles:
+      realm:
+        - name: admin
+        - name: developer
+        - name: readonly
+
+    clients:
+      # Kafka broker
+      - clientId: broker-client
+        clientAuthenticatorType: client-secret
+        secret: kafka-secret
+        standardFlowEnabled: false
+        serviceAccountsEnabled: true
+      # Apicurio Registry instance
+      # - clientId: registry-client-api
+      #   clientAuthenticatorType: client-secret
+      #   secret: api-secret
+      #   standardFlowEnabled: false
+      #   serviceAccountsEnabled: true
+      # - clientId: registry-client-ui
+      #   implicitFlowEnabled: true
+      #   redirectUris:
+      #     - '*'
+      #   standardFlowEnabled: true
+      #   webOrigins:
+      #     - '*'
+      #   publicClient: true
+      # Quarkus application
+      - clientId: {{ .name }}-app-client
+        clientAuthenticatorType: client-secret
+        secret: quarkus-secret
+        standardFlowEnabled: false
+        serviceAccountsEnabled: true
+      # Kafka test client
+      - clientId: {{ .name }}-kafka-client
+        clientAuthenticatorType: client-secret
+        secret: kafka-client-secret
+        standardFlowEnabled: false
+        serviceAccountsEnabled: true
+
+    # users:
+    #   # Apicurio Registry UI users
+    #   - credentials:
+    #       - temporary: false
+    #         type: password
+    #         value: admin
+    #     enabled: true
+    #     realmRoles:
+    #       - admin
+    #     username: registry-admin
+    #   - credentials:
+    #       - temporary: false
+    #         type: password
+    #         value: developer
+    #     enabled: true
+    #     realmRoles:
+    #       - developer
+    #     username: registry-developer
+    #   - credentials:
+    #       - temporary: false
+    #         type: password
+    #         value: user
+    #     enabled: true
+    #     realmRoles:
+    #       - readonly
+    #     username: registry-user
+{{- end }}
