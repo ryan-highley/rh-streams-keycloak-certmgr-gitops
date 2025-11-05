@@ -21,7 +21,7 @@ spec:
           name: movies-app-broker
           authorization:
             type: keycloak
-            tokenEndpointUri: https://keycloak-service.keycloak.svc.cluster.local/auth/realms/movies-app-broker-kafka/protocol/openid-connect/token
+            tokenEndpointUri: https://keycloak-service.keycloak.svc.cluster.local:8443/auth/realms/movies-app-broker-kafka/protocol/openid-connect/token
             delegateToKafkaAcls: false
             disableTlsHostnameVerification: false
             clientId: broker-client
@@ -36,8 +36,8 @@ spec:
               authentication:
                 type: oauth
                 enableOauthBearer: true
-                jwksEndpointUri: https://keycloak-service.keycloak.svc.cluster.local/auth/realms/movies-app-broker-kafka/protocol/openid-connect/certs
-                validIssuerUri: https://keycloak-service.keycloak.svc.cluster.local/auth/realms/movies-app-broker-kafka
+                jwksEndpointUri: https://keycloak-service.keycloak.svc.cluster.local:8443/auth/realms/movies-app-broker-kafka/protocol/openid-connect/certs
+                validIssuerUri: https://keycloak-service.keycloak.svc.cluster.local:8443/auth/realms/movies-app-broker-kafka
                 userNameClaim: azp
                 clientId: broker-client
                 clientSecret:
