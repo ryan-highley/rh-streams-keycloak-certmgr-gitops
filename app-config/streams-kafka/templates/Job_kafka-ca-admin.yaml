@@ -13,6 +13,9 @@ spec:
         - name: source-secret
           secret:
             secretName: {{ .name }}-cert-issuer-secret
+        - name: script-configmap
+          configMap:
+            name: kafka-ca-admin
       serviceAccountName: kafka-ca-admin
       securityContext:
         runAsNonRoot: true
@@ -23,18 +26,11 @@ spec:
             - mountPath: /opt/cert/source
               name: source-secret
               readOnly: true
+            - mountPath: /opt/cert/script
+              name: script-configmap
+              readOnly: true
           command:
             - /bin/sh
-            - -c
-          args:
-            - cat /opt/cert/source/{tls.crt,ca.crt} >/tmp/ca.crt
-            - '&&'
-            - oc create secret generic {{ .name }}-clients-ca-cert --from-file=ca.crt=/tmp/ca.crt --dry-run='client' -o yaml | oc apply -f -
-            - '&&'
-            - oc create secret generic {{ .name }}-cluster-ca-cert --from-file=ca.crt=/tmp/ca.crt --dry-run='client' -o yaml | oc apply -f -
-            - '&&'
-            - oc create secret generic {{ .name }}-clients-ca --from-file=ca.key=/opt/cert/source/tls.key --dry-run='client' -o yaml | oc apply -f -
-            - '&&'
-            - oc create secret generic {{ .name }}-cluster-ca --from-file=ca.key=/opt/cert/source/tls.key --dry-run='client' -o yaml | oc apply -f -
+            - /opt/cert/script/kafka-ca-admin.sh
       restartPolicy: OnFailure
 {{- end }}
