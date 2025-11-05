@@ -27,6 +27,13 @@ nodePools:
       roles:
         - controller
         - broker
+      resources: 
+        requests:
+          memory: 256Mi
+          cpu: 500m
+        limits:
+          memory: 1Gi
+          cpu: "1"
       storage:
         type: ephemeral
 # storage:
@@ -36,13 +43,6 @@ nodePools:
 #       type: persistent-claim
 #       size: 10Gi
 #       deleteClaim: false
-# resources: 
-#   requests:
-#     memory: 256Mi
-#     cpu: 500m
-#   limits:
-#     memory: 1Gi
-#     cpu: "1"
 
 topics:
   - name: test-topic
