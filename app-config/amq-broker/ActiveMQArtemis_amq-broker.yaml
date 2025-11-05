@@ -1,0 +1,38 @@
+apiVersion: broker.amq.io/v1beta1
+kind: ActiveMQArtemis
+metadata:
+  name: amq-broker
+spec:
+  acceptors:
+    - expose: true
+      name: artemis
+      port: 61616
+    - expose: true
+      name: amqps
+      port: 5671
+      protocols: 'AMQP'
+      sslEnabled: true
+      sslSecret: broker-tls-secret
+    - expose: true
+      name: amqp
+      port: 5672
+      protocols: 'AMQP'
+      sslEnabled: false
+    - expose: true
+      name: mqtt
+      port: 1833
+      protocols: 'MQTT'
+      sslEnabled: false
+  console:
+    expose: true
+    sslEnabled: true
+    sslSecret: broker-tls-secret
+  deploymentPlan:
+    image: placeholder
+    jolokiaAgentEnabled: false
+    journalType: nio
+    managementRBACEnabled: true
+    messageMigration: false
+    persistenceEnabled: false
+    requireLogin: false
+    size: 1

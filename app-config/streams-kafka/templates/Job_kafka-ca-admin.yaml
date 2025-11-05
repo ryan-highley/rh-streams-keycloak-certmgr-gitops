@@ -1,0 +1,40 @@
+{{- with .Values.cluster -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kafka-ca-admin
+spec:
+  selector: {}
+  template:
+    metadata:
+      name: processor
+    spec:
+      volumes:
+        - name: source-secret
+          secret:
+            secretName: {{ .name }}-cert-issuer-secret
+      serviceAccountName: kafka-ca-admin
+      securityContext:
+        runAsNonRoot: true
+      containers:
+        - name: processor
+          image: registry.redhat.io/openshift4/ose-cli:latest
+          volumeMounts:
+            - mountPath: /opt/cert/source
+              name: source-secret
+              readOnly: true
+          command:
+            - /bin/sh
+            - -c
+          args:
+            - cat /opt/cert/source/{tls.crt,ca.crt} >/tmp/ca.crt
+            - '&&'
+            - oc create secret generic {{ .name }}-clients-ca-cert --from-file=ca.crt=/tmp/ca.crt --dry-run='client' -o yaml | oc apply -f -
+            - '&&'
+            - oc create secret generic {{ .name }}-cluster-ca-cert --from-file=ca.crt=/tmp/ca.crt --dry-run='client' -o yaml | oc apply -f -
+            - '&&'
+            - oc create secret generic {{ .name }}-clients-ca --from-file=ca.key=/opt/cert/source/tls.key --dry-run='client' -o yaml | oc apply -f -
+            - '&&'
+            - oc create secret generic {{ .name }}-cluster-ca --from-file=ca.key=/opt/cert/source/tls.key --dry-run='client' -o yaml | oc apply -f -
+      restartPolicy: OnFailure
+{{- end }}

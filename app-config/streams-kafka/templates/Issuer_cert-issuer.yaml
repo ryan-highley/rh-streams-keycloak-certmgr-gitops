@@ -1,7 +1,9 @@
+{{- with .Values.cluster -}}
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: {{ .Values.cluster.name }}-cert-issuer
+  name: {{ .name }}-cert-issuer
 spec:
   ca:
-    secretName: {{ .Values.cluster.name }}-cert-issuer-secret
+    secretName: {{ .name }}-cert-issuer-secret
+{{- end }}

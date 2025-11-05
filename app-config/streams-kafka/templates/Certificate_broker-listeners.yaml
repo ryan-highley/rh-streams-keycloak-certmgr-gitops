@@ -1,3 +1,4 @@
+{{- with .Values.cluster -}}
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
@@ -5,13 +6,14 @@ metadata:
 spec:
   secretName: cert-broker-secret
   issuerRef:
-    name: {{ .Values.cluster.name }}-cert-issuer
+    name: {{ .name }}-cert-issuer
     kind: Issuer
-  commonName: {{ .Values.cluster.name }}-kafka
+  commonName: {{ .name }}-kafka
   dnsNames:
-  - '*.{{ .Values.cluster.name }}-kafka-brokers'
-  - '*.{{ .Values.cluster.name }}-kafka-brokers.{{ .Release.Namespace }}.svc'
-  - '*.{{ .Values.cluster.name }}-kafka-brokers.{{ .Release.Namespace }}.svc.cluster.local'
-  - {{ .Values.cluster.name }}-kafka-bootstrap
-  - {{ .Values.cluster.name }}-kafka-bootstrap.{{ .Release.Namespace }}.svc
-  - {{ .Values.cluster.name }}-kafka-bootstrap.{{ .Release.Namespace }}.svc.cluster.local
+  - '*.{{ .name }}-kafka-brokers'
+  - '*.{{ .name }}-kafka-brokers.{{ $.Release.Namespace }}.svc'
+  - '*.{{ .name }}-kafka-brokers.{{ $.Release.Namespace }}.svc.cluster.local'
+  - {{ .name }}-kafka-bootstrap
+  - {{ .name }}-kafka-bootstrap.{{ $.Release.Namespace }}.svc
+  - {{ .name }}-kafka-bootstrap.{{ $.Release.Namespace }}.svc.cluster.local
+{{- end }}
