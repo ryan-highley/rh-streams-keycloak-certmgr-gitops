@@ -19,6 +19,30 @@ spec:
       valuesObject:
         cluster:
           name: movies-app-broker
+          authorization:
+            type: keycloak
+            tokenEndpointUri: https://keycloak-service.keycloak.svc.cluster.local/auth/realms/movies-app-broker-kafka/protocol/openid-connect/token
+            delegateToKafkaAcls: false
+            disableTlsHostnameVerification: false
+            clientId: broker-client
+            clientSecret:
+              secretName: broker-client
+              key: clientSecret
+          listeners:
+            - name: tls
+              port: 9093
+              type: internal
+              tls: true
+              authentication:
+                type: oauth
+                enableOauthBearer: true
+                jwksEndpointUri: https://keycloak-service.keycloak.svc.cluster.local/auth/realms/movies-app-broker-kafka/protocol/openid-connect/certs
+                validIssuerUri: https://keycloak-service.keycloak.svc.cluster.local/auth/realms/movies-app-broker-kafka
+                userNameClaim: azp
+                clientId: broker-client
+                clientSecret:
+                  secretName: broker-client
+                  key: clientSecret
         topics:
           - name: actors
             spec:
