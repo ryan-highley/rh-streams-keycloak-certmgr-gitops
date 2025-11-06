@@ -12,6 +12,7 @@ spec:
     enabled: true
   hostname:
     hostname: https://keycloak-service.keycloak.svc:8443
+    admin: https://localhost:8443
   resources:
     requests:
       memory: 256Mi
