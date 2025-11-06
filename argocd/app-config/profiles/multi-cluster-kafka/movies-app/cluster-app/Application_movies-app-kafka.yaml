@@ -21,7 +21,7 @@ spec:
           name: movies-app-broker
           authorization:
             type: keycloak
-            tokenEndpointUri: https://keycloak-service.keycloak.svc.cluster.local:8443/auth/realms/movies-app-broker-kafka/protocol/openid-connect/token
+            tokenEndpointUri: https://keycloak-service.keycloak.svc:8443/realms/movies-app-broker-kafka/protocol/openid-connect/token
             delegateToKafkaAcls: false
             disableTlsHostnameVerification: false
             tlsTrustedCertificates:
@@ -39,8 +39,8 @@ spec:
               authentication:
                 type: oauth
                 enableOauthBearer: true
-                jwksEndpointUri: https://keycloak-service.keycloak.svc.cluster.local:8443/auth/realms/movies-app-broker-kafka/protocol/openid-connect/certs
-                validIssuerUri: https://keycloak-service.keycloak.svc.cluster.local:8443/auth/realms/movies-app-broker-kafka
+                jwksEndpointUri: https://keycloak-service.keycloak.svc:8443/realms/movies-app-broker-kafka/protocol/openid-connect/certs
+                validIssuerUri: https://keycloak-service.keycloak.svc:8443/realms/movies-app-broker-kafka
                 tlsTrustedCertificates:
                   - secretName: movies-app-broker-cert-issuer-secret
                     certificate: ca.crt

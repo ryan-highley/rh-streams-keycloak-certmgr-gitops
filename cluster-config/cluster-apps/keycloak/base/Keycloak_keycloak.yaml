@@ -11,7 +11,7 @@ spec:
   networkPolicy:
     enabled: true
   hostname:
-    hostname: https://localhost:8443
+    hostname: https://keycloak-service.keycloak.svc:8443
   resources:
     requests:
       memory: 256Mi
