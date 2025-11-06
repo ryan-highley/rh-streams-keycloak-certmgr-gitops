@@ -16,10 +16,10 @@ spec:
       {{- toYaml .listeners | nindent 6 }}
     version: {{ .version | default "4.0.0" }}
     metadataVersion: {{ .metadataVersion | default "4.0-IV3" }}
-    clientsCa:
-      generateCertificateAuthority: false
-    clusterCa:
-      generateCertificateAuthority: false
+  clientsCa:
+    generateCertificateAuthority: false
+  clusterCa:
+    generateCertificateAuthority: false
   entityOperator:
     topicOperator: {}
     userOperator: {}

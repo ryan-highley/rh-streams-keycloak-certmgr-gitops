@@ -28,9 +28,6 @@ spec:
               - secretName: movies-app-broker-cert-issuer-secret
                 certificate: ca.crt
             clientId: broker-client
-            clientSecret:
-              secretName: broker-client
-              key: clientSecret
           listeners:
             - name: tls
               port: 9093
