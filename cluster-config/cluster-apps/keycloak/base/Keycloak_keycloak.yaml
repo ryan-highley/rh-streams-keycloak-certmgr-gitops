@@ -13,6 +13,7 @@ spec:
   hostname:
     hostname: https://keycloak-service.keycloak.svc:8443
     admin: https://localhost:8443
+    backchannelDynamic: true
   resources:
     requests:
       memory: 256Mi
