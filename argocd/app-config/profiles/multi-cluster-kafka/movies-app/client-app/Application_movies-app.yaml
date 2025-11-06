@@ -13,6 +13,22 @@ spec:
   source:
     path: app-config/kafka-client
     repoURL: https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops
+    kustomize:
+      patches:
+        - target:
+            kind: Certificate
+            name: kafka-client-cert-issuer
+          patch: |-
+            - op: replace
+              path: /spec/commonName
+              value: movies-app-kafka-client-ca
+        - target:
+            kind: Certificate
+            name: kafka-client-cert
+          patch: |-
+            - op: replace
+              path: /spec/commonName
+              value: movies-app-kafka-client
   syncPolicy:
     automated:
       prune: true

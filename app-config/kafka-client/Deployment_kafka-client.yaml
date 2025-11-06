@@ -26,3 +26,25 @@ spec:
             - -c
           args:
             - sleep infinity
+          env:
+            - name: STOREPASS
+              valueFrom:
+                secretKeyRef:
+                  name: kafka-client-cert-secret-keystore
+                  key: password
+          volumeMounts:
+            - name: kafka-client-cert
+              readOnly: true
+              mountPath: /opt/kafka/client/cert
+            - name: kafka-client-config
+              readOnly: true
+              mountPath: /opt/kafka/client/config
+      volumes:
+        - name: kafka-client-cert
+          secret:
+            secretName: kafka-client-cert-secret
+            defaultMode: 420
+        - name: kafka-client-config
+          configMap:
+            name: kafka-client-config
+            defaultMode: 420

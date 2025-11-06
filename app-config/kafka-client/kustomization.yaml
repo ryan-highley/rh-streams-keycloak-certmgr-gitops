@@ -1,0 +1,14 @@
+resources:
+  - Certificate_cert-issuer.yaml
+  - Issuer_cert-issuer.yaml
+  - Certificate_kafka-client-cert.yaml
+  - Deployment_kafka-client.yaml
+
+secretGenerator:
+  - name: kafka-client-cert-secret-keystore
+    behavior: create
+    type: Opaque
+    literals:
+      - password=not-terribly-secure
+    options:
+      disableNameSuffixHash: true
