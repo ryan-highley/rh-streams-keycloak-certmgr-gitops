@@ -27,8 +27,14 @@ spec:
     roles:
       realm:
         - name: admin
+          description: Kafka Cluster Administrator
+
         - name: readwrite
+          description: Kafka Client Application with Read/Write Access to Topics
+
         - name: readonly
+          description: Kafka Client Application with Read-Only Access to Topics
+
       client:
         {{ .name }}-client:
           - name: uma_protection
@@ -110,26 +116,12 @@ spec:
               decisionStrategy: UNANIMOUS
               config:
                 roles: '[{"id": "readonly", "required": true}]'
-            - name: admin has full access to Topics
+            - name: admin has full access to Topics, Groups, and Clusters
               type: resource
               logic: POSITIVE
               decisionStrategy: UNANIMOUS
               config:
-                resources: '["Topic:*"]'
-                applyPolicies: '["admin"]'
-            - name: admin has full access to Groups
-              type: resource
-              logic: POSITIVE
-              decisionStrategy: UNANIMOUS
-              config:
-                resources: '["Group:*"]'
-                applyPolicies: '["admin"]'
-            - name: admin has full access to Clusters
-              type: resource
-              logic: POSITIVE
-              decisionStrategy: UNANIMOUS
-              config:
-                resources: '["Cluster:*"]'
+                resources: '["Topic:*", "Group:*", "Cluster:*"]'
                 applyPolicies: '["admin"]'
             - name: readwrite can read and write on All Topics and All Groups
               type: resource
