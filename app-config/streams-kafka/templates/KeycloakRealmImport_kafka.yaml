@@ -19,72 +19,183 @@ spec:
     id: {{ .name }}-kafka
     realm: {{ .name }}-kafka
     displayName: {{ .name }} Kafka Realm
+    accessTokenLifespan: 3600
+    ssoSessionIdleTimeout: 864000
+    ssoSessionMaxLifespan: 864000
     enabled: true
-    sslRequired: none
+    sslRequired: external
     roles:
       realm:
         - name: admin
-        - name: developer
+        - name: readwrite
         - name: readonly
+      client:
+        {{ .name }}-client:
+          - name: uma_protection
+            clientRole: true
+        {{ .name }}-app-client: []
+        {{ .name }}-kafka-cli: []
 
     clients:
       # Kafka broker
-      - clientId: broker-client
+      - clientId: {{ .name }}-client
+        enabled: true
         clientAuthenticatorType: client-secret
         secret: kafka-secret
+        bearerOnly: false
+        consentRequired: false
         standardFlowEnabled: false
+        implicitFlowEnabled: false
+        directAccessGrantsEnabled: true
         serviceAccountsEnabled: true
-      # Apicurio Registry instance
-      # - clientId: registry-client-api
-      #   clientAuthenticatorType: client-secret
-      #   secret: api-secret
-      #   standardFlowEnabled: false
-      #   serviceAccountsEnabled: true
-      # - clientId: registry-client-ui
-      #   implicitFlowEnabled: true
-      #   redirectUris:
-      #     - '*'
-      #   standardFlowEnabled: true
-      #   webOrigins:
-      #     - '*'
-      #   publicClient: true
+        authorizationServicesEnabled: true
+        publicClient: false
+        fullScopeAllowed: true
+        authorizationSettings:
+          allowRemoteResourceManagement: true
+          policyEnforcementMode: ENFORCING
+          resources:
+            - name: Topic:*
+              type: Topic
+              ownerManagedAccess: false
+              displayName: "All Topics"
+              attributes: {}
+              uris: []
+              scopes:
+                - name: Create
+                - name: Delete
+                - name: Describe
+                - name: Write
+                - name: Read
+                - name: Alter
+                - name: DescribeConfigs
+                - name: AlterConfigs
+            - name: Group:*
+              type: Group
+              ownerManagedAccess: false
+              displayName: "All Groups"
+              attributes: {}
+              uris: []
+              scopes:
+                - name: Describe
+                - name: Read
+                - name: DescribeConfigs
+                - name: AlterConfigs
+            - name: Cluster:*
+              type: Cluster
+              ownerManagedAccess: false
+              attributes: {}
+              uris: []
+              scopes:
+                - name: DescribeConfigs
+                - name: AlterConfigs
+                - name: ClusterAction
+                - name: IdempotentWrite
+          policies:
+            - name: admin
+              type: role
+              logic: POSITIVE
+              decisionStrategy: UNANIMOUS
+              config:
+                roles: '[{"id": "admin", "required": true}]'
+            - name: readwrite
+              type: role
+              logic: POSITIVE
+              decisionStrategy: UNANIMOUS
+              config:
+                roles: '[{"id": "readwrite", "required": true}]'
+            - name: readonly
+              type: role
+              logic: POSITIVE
+              decisionStrategy: UNANIMOUS
+              config:
+                roles: '[{"id": "readonly", "required": true}]'
+            - name: admin owns everything
+              type: resource
+              logic: POSITIVE
+              decisionStrategy: UNANIMOUS
+              config:
+                resources: '["Topic:*", "Group:*", "Cluster:*"]'
+                applyPolicies: '["admin"]'
+            - name: readwrite can read and write on All Topics and All Groups
+              type: resource
+              logic: POSITIVE
+              decisionStrategy: UNANIMOUS
+              config:
+                resources: '["Topic:*", "Group:*"]'
+                scopes: '["Describe", "Write", "IdempotentWrite", "Read", "DescribeConfigs"]'
+                applyPolicies: '["readwrite"]'
+            - name: readonly can read on All Topics and All Groups
+              type: resource
+              logic: POSITIVE
+              decisionStrategy: UNANIMOUS
+              config:
+                resources: '["Topic:*", "Group:*"]'
+                scopes: '["Describe", "Read", "DescribeConfigs"]'
+                applyPolicies: '["readonly"]'
+          scopes:
+            - name: Create
+            - name: Read
+            - name: Write
+            - name: Delete
+            - name: Alter
+            - name: Describe
+            - name: ClusterAction
+            - name: DescribeConfigs
+            - name: AlterConfigs
+            - name: IdempotentWrite
+          decisionStrategy: AFFIRMATIVE
+
+
       # Quarkus application
       - clientId: {{ .name }}-app-client
+        enabled: true
         clientAuthenticatorType: client-secret
         secret: quarkus-secret
         standardFlowEnabled: false
+        implicitFlowEnabled: false
+        directAccessGrantsEnabled: true
         serviceAccountsEnabled: true
-      # Kafka test client
-      - clientId: {{ .name }}-kafka-client
+        publicClient: false
+        fullScopeAllowed: true
+      # Kafka CLI
+      - clientId: {{ .name }}-kafka-cli
+        enabled: true
         clientAuthenticatorType: client-secret
-        secret: kafka-client-secret
+        secret: kafka-cli-secret
+        bearerOnly: false
+        consentRequired: false
         standardFlowEnabled: false
-        serviceAccountsEnabled: true
+        implicitFlowEnabled: false
+        directAccessGrantsEnabled: true
+        serviceAccountsEnabled: false
+        publicClient: true
+        fullScopeAllowed: true
 
-    # users:
-    #   # Apicurio Registry UI users
-    #   - credentials:
-    #       - temporary: false
-    #         type: password
-    #         value: admin
-    #     enabled: true
-    #     realmRoles:
-    #       - admin
-    #     username: registry-admin
-    #   - credentials:
-    #       - temporary: false
-    #         type: password
-    #         value: developer
-    #     enabled: true
-    #     realmRoles:
-    #       - developer
-    #     username: registry-developer
-    #   - credentials:
-    #       - temporary: false
-    #         type: password
-    #         value: user
-    #     enabled: true
-    #     realmRoles:
-    #       - readonly
-    #     username: registry-user
+    users:
+      # Kafka CLI user
+      - username: service-account-{{ .name }}-kafka-cli
+        enabled: true
+        serviceAccountClientId: {{ .name }}-kafka-cli
+        realmRoles:
+          - offline_access
+          - admin
+        clientRoles:
+          account:
+            - manage-account
+            - view-profile
+        groups: []
+
+      # Application Client user
+      - username: service-account-{{ .name }}-app-client
+        enabled: true
+        serviceAccountClientId: {{ .name }}-app-client
+        realmRoles:
+          - offline_access
+          - readwrite
+        clientRoles:
+          account:
+            - manage-account
+            - view-profile
+        groups: []
 {{- end }}
