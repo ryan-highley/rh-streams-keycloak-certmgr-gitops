@@ -45,6 +45,6 @@ spec:
             secretName: kafka-client-cert-secret
             defaultMode: 420
         - name: kafka-client-config
-          configMap:
-            name: kafka-client-config
+          secret:
+            secretName: kafka-client-config
             defaultMode: 420

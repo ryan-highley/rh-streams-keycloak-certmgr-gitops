@@ -13,8 +13,6 @@ secretGenerator:
     type: Opaque
     literals:
       - password=not-terribly-secure
-
-configMapGenerator:
   - name: kafka-client-config
     files:
       - kafka-client-config.properties
