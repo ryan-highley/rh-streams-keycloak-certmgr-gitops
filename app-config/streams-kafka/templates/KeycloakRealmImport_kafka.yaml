@@ -160,12 +160,13 @@ spec:
             - name: IdempotentWrite
           decisionStrategy: AFFIRMATIVE
 
-
       # Quarkus application
       - clientId: {{ .name }}-app-client
         enabled: true
         clientAuthenticatorType: client-secret
         secret: quarkus-secret
+        bearerOnly: false
+        consentRequired: false
         standardFlowEnabled: false
         implicitFlowEnabled: false
         directAccessGrantsEnabled: true
@@ -177,6 +178,8 @@ spec:
         enabled: true
         clientAuthenticatorType: client-secret
         secret: kafka-cli-secret
+        bearerOnly: false
+        consentRequired: false
         standardFlowEnabled: false
         implicitFlowEnabled: false
         directAccessGrantsEnabled: true
