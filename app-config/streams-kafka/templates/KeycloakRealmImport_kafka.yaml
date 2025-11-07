@@ -163,13 +163,11 @@ spec:
         enabled: true
         clientAuthenticatorType: client-secret
         secret: kafka-cli-secret
-        bearerOnly: false
-        consentRequired: false
         standardFlowEnabled: false
         implicitFlowEnabled: false
         directAccessGrantsEnabled: true
-        serviceAccountsEnabled: false
-        publicClient: true
+        serviceAccountsEnabled: true
+        publicClient: false
         fullScopeAllowed: true
 
     users:
