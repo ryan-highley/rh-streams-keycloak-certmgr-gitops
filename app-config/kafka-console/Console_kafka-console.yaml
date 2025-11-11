@@ -1,0 +1,66 @@
+apiVersion: console.streamshub.github.com/v1alpha1
+kind: Console
+metadata:
+  name: kafka-console
+spec:
+  hostname: console-kafka-console.apps.cluster-hh7wz.dynamic.redhatworkshops.io
+  security:
+    oidc:
+      authServerUrl: https://keycloak-service.keycloak.svc:8443/realms/movies-app-broker-kafka/.well-known/openid-configuration
+      clientId: movies-app-broker-kafka-cli
+      clientSecret:
+        value: kafka-cli-secret
+      trustStore:
+        type: PEM
+        content:
+          valueFrom:
+            secretKeyRef:
+              name: movies-app-broker-cert-issuer-secret
+              key: ca.crt
+    subjects:
+      - include:
+          - admin
+        roleNames:
+          - administrators
+      - include:
+          - developer
+        roleNames:
+          - developers
+    roles:
+      - name: developers
+        rules:
+          - resources:
+              - kafkas
+            resourceNames:
+              - movies-app-broker
+            privileges:
+              - 'ALL'
+      - name: administrators
+        rules:
+          - resources:
+              - kafkas
+            privileges:
+              - 'ALL'
+  kafkaClusters:
+    - name: movies-app-broker
+      namespace: movies-app-kafka
+      listener: tls
+      properties:
+        values:
+          - security.protocol: SASL_SSL
+          - sasl.mechanism: OAUTHBEARER
+          - ssl.truststore.location: /opt/kafka/client/cert/truststore.p12
+          - ssl.truststore.password: not-terribly-secure
+          - ssl.truststore.type: PKCS12
+          - sasl.login.callback.handler.class: io.strimzi.kafka.oauth.client.JaasClientOauthLoginCallbackHandler
+          - sasl.jaas.config: |-
+              org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required
+              oauth.token.endpoint.uri="https://keycloak-service.keycloak.svc:8443/realms/movies-app-broker-kafka/protocol/openid-connect/token"
+              oauth.client.id="movies-app-broker-kafka-cli"
+              oauth.client.secret="kafka-cli-secret"
+              oauth.grant.type="client_credentials"
+              oauth.scope="profile roles"
+              oauth.ssl.truststore.location="/opt/kafka/client/cert/truststore.p12"
+              oauth.ssl.truststore.password="not-terribly-secure"
+              oauth.ssl.truststore.type="PKCS12" ;
+
