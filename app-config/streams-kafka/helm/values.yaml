@@ -18,6 +18,8 @@ cluster:
     transaction.state.log.min.isr: 2
     default.replication.factor: 3
     min.insync.replicas: 2
+    config.providers: env
+    config.providers.env.class: org.apache.kafka.common.config.provider.EnvVarConfigProvider
 
 
 nodePools:

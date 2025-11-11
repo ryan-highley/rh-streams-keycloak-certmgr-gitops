@@ -30,8 +30,8 @@ spec:
             - name: STOREPASS
               valueFrom:
                 secretKeyRef:
-                  name: kafka-client-cert-secret-keystore
-                  key: password
+                  name: kafka-cli
+                  key: user.password
           volumeMounts:
             - name: kafka-client-cert
               readOnly: true
@@ -42,7 +42,7 @@ spec:
       volumes:
         - name: kafka-client-cert
           secret:
-            secretName: kafka-client-cert-secret
+            secretName: kafka-cli
             defaultMode: 420
         - name: kafka-client-config
           secret:
