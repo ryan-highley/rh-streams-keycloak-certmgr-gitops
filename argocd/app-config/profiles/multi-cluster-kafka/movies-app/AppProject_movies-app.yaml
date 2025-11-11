@@ -3,6 +3,9 @@ kind: AppProject
 metadata:
   name: movies-app
 spec:
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: Namespace
   destinations:
     - namespace: 'movies-app'
       server: https://kubernetes.default.svc

@@ -16,7 +16,7 @@ spec:
     helm:
       namespace: music-app-kafka
       releaseName: music-app
-      valuesFiles:
+      valueFiles:
         - values.yaml
   syncPolicy:
     automated:

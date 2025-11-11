@@ -3,6 +3,9 @@ kind: AppProject
 metadata:
   name: music-app
 spec:
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: Namespace
   destinations:
     - namespace: 'music-app'
       server: https://kubernetes.default.svc

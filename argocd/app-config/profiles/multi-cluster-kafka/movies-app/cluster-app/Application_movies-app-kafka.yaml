@@ -16,7 +16,7 @@ spec:
     helm:
       namespace: movies-app-kafka
       releaseName: movies-app
-      valuesFiles:
+      valueFiles:
         - values.yaml
   syncPolicy:
     automated:
