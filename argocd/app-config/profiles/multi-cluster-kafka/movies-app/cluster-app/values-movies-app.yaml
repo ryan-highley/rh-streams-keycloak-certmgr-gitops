@@ -1,0 +1,115 @@
+cluster:
+  name: movies-app-broker
+  authorization:
+    type: simple
+    superUsers:
+      - CN=movies-app-kafka-client, OU=Client Apps, OU=Kafka Clients, O=Multi-Cluster Kafka
+  listeners:
+    - name: tls
+      port: 9093
+      type: internal
+      tls: true
+      authentication:
+        type: tls
+
+nodePools:
+  - name: controller-node-pool
+    spec:
+      replicas: 3
+      roles:
+        - controller
+      resources: 
+        requests:
+          memory: 256Mi
+          cpu: 500m
+        limits:
+          memory: 1Gi
+          cpu: "1"
+      storage:
+        type: jbod
+        volumes:
+          - id: 0
+            type: persistent-claim
+            size: 2Gi
+            deleteClaim: false
+      template:
+        pod:
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: strimzi.io/pool-name
+                        operator: In
+                        values:
+                          - controller-node-pool
+                  topologyKey: "kubernetes.io/hostname"
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: topology.kubernetes.io/zone
+              whenUnsatisfiable: DoNotSchedule
+              matchLabelKeys:
+                - strimzi.io/name
+                - strimzi.io/pool-name
+  - name: broker-node-pool
+    spec:
+      replicas: 3
+      roles:
+        - broker
+      resources: 
+        requests:
+          memory: 256Mi
+          cpu: 500m
+        limits:
+          memory: 1Gi
+          cpu: "1"
+      storage:
+        type: jbod
+        volumes:
+          - id: 0
+            type: persistent-claim
+            size: 10Gi
+            deleteClaim: false
+      template:
+        pod:
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: strimzi.io/pool-name
+                        operator: In
+                        values:
+                          - broker-node-pool
+                  topologyKey: "kubernetes.io/hostname"
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: topology.kubernetes.io/zone
+              whenUnsatisfiable: DoNotSchedule
+              matchLabelKeys:
+                - strimzi.io/name
+                - strimzi.io/pool-name
+topics:
+  - name: actors
+    spec:
+      replicas: 3
+      partitions: 12
+  - name: directors
+    spec:
+      replicas: 3
+      partitions: 6
+  - name: movies
+    spec:
+      replicas: 3
+      partitions: 6
+  - name: producers
+    spec:
+      replicas: 3
+      partitions: 12
+  - name: stunts
+    spec:
+      replicas: 3
+      partitions: 24
+
+clientApp:
+  namespace: movies-app

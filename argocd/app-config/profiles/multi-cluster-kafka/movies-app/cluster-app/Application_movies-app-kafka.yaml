@@ -17,7 +17,7 @@ spec:
       namespace: movies-app-kafka
       releaseName: movies-app
       valueFiles:
-        - values.yaml
+        - values-movies-app.yaml
   syncPolicy:
     automated:
       prune: true
