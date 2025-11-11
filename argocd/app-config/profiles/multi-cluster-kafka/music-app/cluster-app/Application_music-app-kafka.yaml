@@ -11,13 +11,13 @@ spec:
     server: https://kubernetes.default.svc
   project: music-app
   source:
-    path: app-config/streams-kafka
+    path: app-config/streams-kafka/helm
     repoURL: https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops
     helm:
       namespace: music-app-kafka
       releaseName: music-app
       valueFiles:
-        - values.yaml
+        - ../values-music-app.yaml
   syncPolicy:
     automated:
       prune: true

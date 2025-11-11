@@ -11,13 +11,13 @@ spec:
     server: https://kubernetes.default.svc
   project: movies-app
   source:
-    path: app-config/streams-kafka
+    path: app-config/streams-kafka/helm
     repoURL: https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops
     helm:
       namespace: movies-app-kafka
       releaseName: movies-app
       valueFiles:
-        - values-movies-app.yaml
+        - ../values-movies-app.yaml
   syncPolicy:
     automated:
       prune: true
