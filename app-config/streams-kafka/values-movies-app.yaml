@@ -3,7 +3,7 @@ cluster:
   authorization:
     type: simple
     superUsers:
-      - CN=movies-app-kafka-client, OU=Client Apps, OU=Kafka Clients, O=Multi-Cluster Kafka
+      - O=Multi-Cluster Kafka, OU=Client Apps + OU=Kafka Clients, CN=movies-app-kafka-client
   listeners:
     - name: tls
       port: 9093

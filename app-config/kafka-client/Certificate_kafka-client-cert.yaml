@@ -7,9 +7,6 @@ spec:
   issuerRef:
     name: kafka-client-cert-issuer
     kind: Issuer
-  privateKey:
-  #   algorithm: ECDSA
-    rotationPolicy: Always
   keystores:
     pkcs12:
       create: true
