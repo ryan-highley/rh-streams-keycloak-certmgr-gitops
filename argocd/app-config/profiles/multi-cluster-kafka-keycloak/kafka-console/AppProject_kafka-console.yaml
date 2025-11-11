@@ -1,12 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: movies-app
+  name: kafka-console
 spec:
   destinations:
-    - namespace: 'movies-app'
-      server: https://kubernetes.default.svc
-    - namespace: 'movies-app-kafka'
+    - namespace: 'kafka-console'
       server: https://kubernetes.default.svc
   sourceRepos:
     - '*'

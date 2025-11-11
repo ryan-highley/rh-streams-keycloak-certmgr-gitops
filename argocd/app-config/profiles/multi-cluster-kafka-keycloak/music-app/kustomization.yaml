@@ -1,0 +1,4 @@
+resources:
+  - AppProject_music-app.yaml
+  - cluster-app/
+  - client-app/

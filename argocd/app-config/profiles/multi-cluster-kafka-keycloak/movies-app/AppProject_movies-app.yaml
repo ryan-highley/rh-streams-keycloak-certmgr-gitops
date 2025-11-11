@@ -8,5 +8,7 @@ spec:
       server: https://kubernetes.default.svc
     - namespace: 'movies-app-kafka'
       server: https://kubernetes.default.svc
+    - namespace: 'keycloak'
+      server: https://kubernetes.default.svc
   sourceRepos:
     - '*'

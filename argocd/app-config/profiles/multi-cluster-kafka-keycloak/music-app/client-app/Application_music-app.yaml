@@ -1,23 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: music-app-kafka
+  name: music-app
   namespace: openshift-gitops
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: music-app-kafka
+    namespace: music-app
     server: https://kubernetes.default.svc
   project: music-app
   source:
-    path: app-config/streams-kafka
+    path: app-config/kafka-client
     repoURL: https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops
-    helm:
-      namespace: music-app-kafka
-      releaseName: music-app
-      valuesFiles:
-        - values.yaml
   syncPolicy:
     automated:
       prune: true

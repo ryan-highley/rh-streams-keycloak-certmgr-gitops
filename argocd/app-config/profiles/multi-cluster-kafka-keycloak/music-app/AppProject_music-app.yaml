@@ -1,12 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: movies-app
+  name: music-app
 spec:
   destinations:
-    - namespace: 'movies-app'
+    - namespace: 'music-app'
       server: https://kubernetes.default.svc
-    - namespace: 'movies-app-kafka'
+    - namespace: 'music-app-kafka'
+      server: https://kubernetes.default.svc
+    - namespace: 'keycloak'
       server: https://kubernetes.default.svc
   sourceRepos:
     - '*'

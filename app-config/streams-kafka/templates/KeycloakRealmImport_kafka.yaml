@@ -1,3 +1,4 @@
+{{- if eq .Values.cluster.authorization.type "oauth" -}}
 {{- with .Values.cluster -}}
 apiVersion: k8s.keycloak.org/v2alpha1
 kind: KeycloakRealmImport
@@ -205,4 +206,5 @@ spec:
             - manage-account
             - view-profile
         groups: []
+{{- end }}
 {{- end }}

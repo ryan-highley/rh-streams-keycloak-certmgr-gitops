@@ -1,0 +1,38 @@
+cluster:
+  name: movies-app-broker
+  authorization:
+    type: simple
+    superUsers:
+      - CN=movies-app-kafka-client, OU=Client Apps, OU=Kafka Clients, O=Multi-Cluster Kafka
+  listeners:
+    - name: tls
+      port: 9093
+      type: internal
+      tls: true
+      authentication:
+        type: tls
+
+topics:
+  - name: actors
+    spec:
+      replicas: 3
+      partitions: 12
+  - name: directors
+    spec:
+      replicas: 3
+      partitions: 6
+  - name: movies
+    spec:
+      replicas: 3
+      partitions: 6
+  - name: producers
+    spec:
+      replicas: 3
+      partitions: 12
+  - name: stunts
+    spec:
+      replicas: 3
+      partitions: 24
+
+clientApp:
+  namespace: movies-app

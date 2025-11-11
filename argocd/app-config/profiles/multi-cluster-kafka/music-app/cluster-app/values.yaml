@@ -1,0 +1,38 @@
+cluster:
+  name: music-app-broker
+  authorization:
+    type: simple
+    superUsers:
+      - CN=music-app-kafka-client, OU=Client Apps, OU=Kafka Clients, O=Multi-Cluster Kafka
+  listeners:
+    - name: tls
+      port: 9093
+      type: internal
+      tls: true
+      authentication:
+        type: tls
+
+topics:
+  - name: albums
+    spec:
+      replicas: 3
+      partitions: 12
+  - name: artists
+    spec:
+      replicas: 3
+      partitions: 24
+  - name: bands
+    spec:
+      replicas: 3
+      partitions: 12
+  - name: producers
+    spec:
+      replicas: 3
+      partitions: 24
+  - name: songs
+    spec:
+      replicas: 3
+      partitions: 48
+
+clientApp:
+  namespace: music-app

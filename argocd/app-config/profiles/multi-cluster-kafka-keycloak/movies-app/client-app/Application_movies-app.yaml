@@ -1,15 +1,15 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: music-app
+  name: movies-app
   namespace: openshift-gitops
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: music-app
+    namespace: movies-app
     server: https://kubernetes.default.svc
-  project: music-app
+  project: movies-app
   source:
     path: app-config/kafka-client
     repoURL: https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops
@@ -21,14 +21,14 @@ spec:
           patch: |-
             - op: replace
               path: /spec/commonName
-              value: music-app-kafka-client-ca
+              value: movies-app-kafka-client-ca
         - target:
             kind: Certificate
             name: kafka-client-cert
           patch: |-
             - op: replace
               path: /spec/commonName
-              value: music-app-kafka-client
+              value: movies-app-kafka-client
   syncPolicy:
     automated:
       prune: true

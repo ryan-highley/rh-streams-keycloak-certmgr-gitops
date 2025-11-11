@@ -8,7 +8,5 @@ spec:
       server: https://kubernetes.default.svc
     - namespace: 'music-app-kafka'
       server: https://kubernetes.default.svc
-    - namespace: 'keycloak'
-      server: https://kubernetes.default.svc
   sourceRepos:
     - '*'

@@ -54,6 +54,16 @@ topics:
       replicas: 3
       partitions: 6
 
+users:
+  - name: kafka-cli
+    spec:
+      authentication:
+        type: tls-external
+  - name: kafka-console
+    spec:
+      authentication:
+        type: tls-external
+
 clientApp:
   namespace: kafka-client-app
   networkPolicy: {}

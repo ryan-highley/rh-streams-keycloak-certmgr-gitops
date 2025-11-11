@@ -1,0 +1,4 @@
+resources:
+  - AppProject_movies-app.yaml
+  - cluster-app/
+  - client-app/

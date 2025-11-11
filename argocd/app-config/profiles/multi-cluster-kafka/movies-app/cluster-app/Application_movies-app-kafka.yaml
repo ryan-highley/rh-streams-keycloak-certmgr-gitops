@@ -16,53 +16,8 @@ spec:
     helm:
       namespace: movies-app-kafka
       releaseName: movies-app
-      valuesObject:
-        cluster:
-          name: movies-app-broker
-          authorization:
-            type: keycloak
-            clientId: movies-app-broker-client
-            tokenEndpointUri: https://keycloak-service.keycloak.svc:8443/realms/movies-app-broker-kafka/protocol/openid-connect/token
-            tlsTrustedCertificates:
-              - secretName: movies-app-broker-cert-issuer-secret
-                certificate: ca.crt
-          listeners:
-            - name: tls
-              port: 9093
-              type: internal
-              tls: true
-              authentication:
-                type: oauth
-                validIssuerUri: https://keycloak-service.keycloak.svc:8443/realms/movies-app-broker-kafka
-                jwksEndpointUri: https://keycloak-service.keycloak.svc:8443/realms/movies-app-broker-kafka/protocol/openid-connect/certs
-                userNameClaim: preferred_username
-                maxSecondsWithoutReauthentication: 3600
-                tlsTrustedCertificates:
-                  - secretName: movies-app-broker-cert-issuer-secret
-                    certificate: ca.crt
-        topics:
-          - name: actors
-            spec:
-              replicas: 3
-              partitions: 12
-          - name: directors
-            spec:
-              replicas: 3
-              partitions: 6
-          - name: movies
-            spec:
-              replicas: 3
-              partitions: 6
-          - name: producers
-            spec:
-              replicas: 3
-              partitions: 12
-          - name: stunts
-            spec:
-              replicas: 3
-              partitions: 24
-        clientApp:
-          namespace: movies-app
+      valuesFiles:
+        - values.yaml
   syncPolicy:
     automated:
       prune: true
