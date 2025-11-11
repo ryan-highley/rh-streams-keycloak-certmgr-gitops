@@ -48,9 +48,10 @@ nodePools:
             - maxSkew: 1
               topologyKey: topology.kubernetes.io/zone
               whenUnsatisfiable: DoNotSchedule
-              matchLabelKeys:
-                - strimzi.io/name
-                - strimzi.io/pool-name
+              labelSelector:
+                matchLabels:
+                  strimzi.io/name: movies-app-broker
+                  strimzi.io/pool-name: controller-node-pool
   - name: broker-node-pool
     spec:
       replicas: 3
@@ -86,9 +87,10 @@ nodePools:
             - maxSkew: 1
               topologyKey: topology.kubernetes.io/zone
               whenUnsatisfiable: DoNotSchedule
-              matchLabelKeys:
-                - strimzi.io/name
-                - strimzi.io/pool-name
+              labelSelector:
+                matchLabels:
+                  strimzi.io/name: movies-app-broker
+                  strimzi.io/pool-name: broker-node-pool
 topics:
   - name: actors
     spec:
