@@ -58,11 +58,11 @@ users:
   - name: kafka-cli
     spec:
       authentication:
-        type: tls-external
+        type: tls
   - name: kafka-console
     spec:
       authentication:
-        type: tls-external
+        type: tls
 
 clientApp:
   namespace: kafka-client-app
