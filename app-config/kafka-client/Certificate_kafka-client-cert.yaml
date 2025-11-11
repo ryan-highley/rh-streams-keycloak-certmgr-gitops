@@ -8,17 +8,19 @@ spec:
     name: kafka-client-cert-issuer
     kind: Issuer
   privateKey:
-    algorithm: ECDSA
+  #   algorithm: ECDSA
+    rotationPolicy: Always
   keystores:
     pkcs12:
       create: true
+      profile: Modern2023
       passwordSecretRef:
         name: kafka-client-cert-secret-keystore
         key: password
   subject:
     organizations:
-      - Multi-Cluster Kafka
+      - "Multi-Cluster Kafka"
     organizationalUnits:
-      - Kafka Clients
-      - Client Apps
+      - "Kafka Clients"
+      - "Client Apps"
   commonName: kafka-client
