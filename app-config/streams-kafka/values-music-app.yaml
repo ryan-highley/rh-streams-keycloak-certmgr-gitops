@@ -4,7 +4,7 @@ cluster:
     type: simple
     superUsers:
       - CN=kafka-cli
-      - CN=kafka-console
+      - kafka-console
   listeners:
     - name: tls
       port: 9093
@@ -12,6 +12,12 @@ cluster:
       tls: true
       authentication:
         type: tls
+    - name: console
+      port: 9094
+      type: internal
+      tls: true
+      authentication:
+        type: scram-sha-512
 
 topics:
   - name: albums

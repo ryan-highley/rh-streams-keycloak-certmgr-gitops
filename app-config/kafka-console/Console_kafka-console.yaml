@@ -7,13 +7,13 @@ spec:
   kafkaClusters:
     - name: movies-app-broker
       namespace: movies-app-kafka
-      listener: tls
+      listener: console
       credentials:
         kafkaUser:
           name: kafka-console
     - name: music-app-broker
       namespace: music-app-kafka
-      listener: tls
+      listener: console
       credentials:
         kafkaUser:
           name: kafka-console
