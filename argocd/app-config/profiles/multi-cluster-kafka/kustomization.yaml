@@ -4,6 +4,7 @@ resources:
   - ../../base
   - movies-app/
   - music-app/
+  - kafka-console/
 
 patches:
   - target:

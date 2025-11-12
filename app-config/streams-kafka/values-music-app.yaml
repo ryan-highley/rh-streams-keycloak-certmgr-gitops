@@ -3,7 +3,8 @@ cluster:
   authorization:
     type: simple
     superUsers:
-      - CN=music-app-kafka-client, OU=Client Apps, OU=Kafka Clients, O=Multi-Cluster Kafka
+      - CN=kafka-cli
+      - CN=kafka-console
   listeners:
     - name: tls
       port: 9093

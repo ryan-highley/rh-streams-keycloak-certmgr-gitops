@@ -64,7 +64,7 @@ users:
   - name: kafka-console
     spec:
       authentication:
-        type: tls
+        type: scram-sha-512
 
 clientApp:
   namespace: kafka-client-app
