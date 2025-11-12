@@ -3,6 +3,9 @@ kind: AppProject
 metadata:
   name: kafka-console
 spec:
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: Namespace
   destinations:
     - namespace: 'kafka-console'
       server: https://kubernetes.default.svc
