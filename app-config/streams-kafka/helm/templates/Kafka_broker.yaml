@@ -16,6 +16,15 @@ spec:
       {{- toYaml .listeners | nindent 6 }}
     version: {{ .version | default "4.0.0" }}
     metadataVersion: {{ .metadataVersion | default "4.0-IV3" }}
+    metricsConfig:
+      type: jmxPrometheusExporter
+      valueFrom:
+        configMapKeyRef:
+          name: kafka-metrics
+          key: kafka-metrics-config.yml
+  kafkaExporter:
+    topicRegex: ".*"
+    groupRegex: ".*"
   clientsCa:
     generateCertificateAuthority: false
   clusterCa:
