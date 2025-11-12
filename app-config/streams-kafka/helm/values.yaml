@@ -18,6 +18,10 @@ cluster:
       tls: true
       authentication:
         type: scram-sha-512
+      networkPolicyPeers:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kafka-console
   config:
     offsets.topic.replication.factor: 3
     transaction.state.log.replication.factor: 3
