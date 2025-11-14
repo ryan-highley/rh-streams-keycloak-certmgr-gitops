@@ -1,0 +1,6 @@
+apiVersion: oauth.openshift.io/v1
+kind: OAuthClient
+metadata:
+  name: kafka-console
+secret: "shhh-kafka-console"
+grantMethod: auto
