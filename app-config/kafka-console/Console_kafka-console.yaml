@@ -6,7 +6,7 @@ spec:
   hostname: console-kafka-console.apps.pp3cdmsj.westus.aroapp.io
   security:
     oidc:
-      authServerUrl: https://openshift.default.svc/.well-known/oauth-authorization-server
+      authServerUrl: https://openshift.default.svc
       clientId: kafka-console
       clientSecret:
         valueFrom:
@@ -19,7 +19,6 @@ spec:
           valueFrom:
             configMapKeyRef:
               name: kube-root-ca.crt
-              namespace: kube-system
               key: ca.crt
     subjects:
       - claim: groups
