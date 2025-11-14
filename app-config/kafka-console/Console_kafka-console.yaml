@@ -13,6 +13,14 @@ spec:
           secretKeyRef:
             name: kafka-console-client-secret
             key: clientSecret
+      trustStore:
+        type: PEM
+        content:
+          valueFrom:
+            configMapKeyRef:
+              name: kube-root-ca.crt
+              namespace: kube-system
+              key: ca.crt
     subjects:
       - claim: groups
         include:
