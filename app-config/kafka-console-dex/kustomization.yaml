@@ -6,4 +6,4 @@ resources:
   - Secret_kafka-console-dex-secrets.yaml
   - Deployment_kafka-console-dex.yaml
   - Service_kafka-console-dex.yaml
-  # - Ingress_kafka-console-dex.yaml
+  - Ingress_kafka-console-dex.yaml

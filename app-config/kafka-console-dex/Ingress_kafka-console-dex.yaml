@@ -13,7 +13,7 @@ spec:
       port:
         number: 5556
   rules:
-    - host: console-dex.${CLUSTER_DOMAIN}
+    - host: console-dex-kafka-console-dex.apps-crc.testing
       http:
         paths:
           - pathType: ImplementationSpecific
