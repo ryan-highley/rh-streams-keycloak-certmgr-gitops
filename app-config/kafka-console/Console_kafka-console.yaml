@@ -1,7 +1,7 @@
 apiVersion: console.streamshub.github.com/v1alpha1
 kind: Console
 metadata:
-  name: kafka-console
+  name: console
 spec:
   hostname: console-kafka-console.apps-crc.testing
   security:
