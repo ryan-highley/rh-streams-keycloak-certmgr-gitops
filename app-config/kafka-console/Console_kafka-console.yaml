@@ -3,10 +3,10 @@ kind: Console
 metadata:
   name: kafka-console
 spec:
-  hostname: console-kafka-console.apps.pp3cdmsj.westus.aroapp.io
+  hostname: console-kafka-console.apps-crc.testing
   security:
     oidc:
-      authServerUrl: https://openshift.default.svc
+      authServerUrl: https://console-dex.kafka-console-dex.svc:5556
       clientId: kafka-console
       clientSecret:
         valueFrom:

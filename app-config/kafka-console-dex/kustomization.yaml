@@ -1,0 +1,9 @@
+resources:
+  - ClusterRole_kafka-console-dex.yaml
+  - ServiceAccount_kafka-console-dex.yaml
+  - ClusterRoleBinding_kafka-console-dex.yaml
+  - Secret_kafka-console-dex.yaml
+  - Secret_kafka-console-dex-secrets.yaml
+  - Deployment_kafka-console-dex.yaml
+  - Service_kafka-console-dex.yaml
+  # - Ingress_kafka-console-dex.yaml
