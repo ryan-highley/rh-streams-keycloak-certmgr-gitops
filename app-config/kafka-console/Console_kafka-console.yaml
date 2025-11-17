@@ -6,7 +6,7 @@ spec:
   hostname: console-kafka-console.apps-crc.testing
   security:
     oidc:
-      authServerUrl: https://console-dex.kafka-console-dex.svc:5556
+      authServerUrl: https://console-dex.apps-crc.testing
       clientId: kafka-console
       clientSecret:
         valueFrom:

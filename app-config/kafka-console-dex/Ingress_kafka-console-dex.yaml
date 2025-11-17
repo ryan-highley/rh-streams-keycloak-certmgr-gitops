@@ -13,7 +13,7 @@ spec:
       port:
         number: 5556
   rules:
-    - host: console-dex-kafka-console-dex.apps-crc.testing
+    - host: console-dex.apps-crc.testing
       http:
         paths:
           - pathType: ImplementationSpecific
