@@ -1,3 +1,4 @@
 resources:
   - AppProject_kafka-console.yaml
   - Application_kafka-console.yaml
+  - Application_kafka-console-dex.yaml

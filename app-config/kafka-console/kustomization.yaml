@@ -1,5 +1,4 @@
 resources:
-  # - OAuthClient_kafka-console.yaml
   - Console_kafka-console.yaml
 
 generatorOptions:

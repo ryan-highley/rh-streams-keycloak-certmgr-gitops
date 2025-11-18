@@ -1,4 +1,3 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -45,15 +44,12 @@ spec:
 
         env:
         - name: OPENSHIFT_OAUTH_CLIENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: console-dex-secrets
-              key: DEX_CLIENT_ID
+          value: system:serviceaccount:kafka-console-dex:console-dex
         - name: OPENSHIFT_OAUTH_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
-              name: console-dex-secrets
-              key: DEX_CLIENT_SECRET
+              name: console-dex-token
+              key: token
 
         readinessProbe:
           httpGet:

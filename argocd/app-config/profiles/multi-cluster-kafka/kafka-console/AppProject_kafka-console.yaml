@@ -7,9 +7,13 @@ spec:
     - group: '*'
       kind: Namespace
     - group: '*'
-      kind: OAuthClient
+      kind: ClusterRole
+    - group: '*'
+      kind: ClusterRoleBinding
   destinations:
     - namespace: 'kafka-console'
+      server: https://kubernetes.default.svc
+    - namespace: 'kafka-console-dex'
       server: https://kubernetes.default.svc
   sourceRepos:
     - '*'
