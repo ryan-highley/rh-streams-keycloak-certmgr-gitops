@@ -36,16 +36,16 @@ spec:
           - music-app-developers
         roleNames:
           - music-app-developers
-      # - claim: groups
-      #   include:
-      #     - movies-app-admins
-      #   roleNames:
-      #     - movies-app-admins
-      # - claim: groups
-      #   include:
-      #     - movies-app-developers
-      #   roleNames:
-      #     - movies-app-developers
+      - claim: groups
+        include:
+          - movies-app-admins
+        roleNames:
+          - movies-app-admins
+      - claim: groups
+        include:
+          - movies-app-developers
+        roleNames:
+          - movies-app-developers
     roles:
       - name: kafka-admins
         rules:
@@ -54,40 +54,40 @@ spec:
             privileges:
               - ALL
   kafkaClusters:
-    # - name: movies-app-broker
-    #   namespace: movies-app-kafka
-    #   listener: console
-    #   credentials:
-    #     kafkaUser:
-    #       name: kafka-console
-    #   security:
-    #     roles:
-    #       - name: movies-app-admins
-    #         rules:
-    #           - resources:
-    #               - topics
-    #               - topics/records
-    #               - consumerGroups
-    #               - rebalances
-    #               - nodes/configs
-    #             privileges:
-    #               - GET
-    #               - LIST
-    #           - resources:
-    #               - consumerGroups
-    #               - rebalances
-    #             privileges:
-    #               - UPDATE
-    #       - name: movies-app-developers
-    #         rules:
-    #           - resources:
-    #               - topics
-    #               - topics/records
-    #               - consumerGroups
-    #               - rebalances
-    #             privileges:
-    #               - GET
-    #               - LIST
+    - name: movies-app-broker
+      namespace: movies-app-kafka
+      listener: console
+      credentials:
+        kafkaUser:
+          name: kafka-console
+      security:
+        roles:
+          - name: movies-app-admins
+            rules:
+              - resources:
+                  - topics
+                  - topics/records
+                  - consumerGroups
+                  - rebalances
+                  - nodes/configs
+                privileges:
+                  - GET
+                  - LIST
+              - resources:
+                  - consumerGroups
+                  - rebalances
+                privileges:
+                  - UPDATE
+          - name: movies-app-developers
+            rules:
+              - resources:
+                  - topics
+                  - topics/records
+                  - consumerGroups
+                  - rebalances
+                privileges:
+                  - GET
+                  - LIST
     - name: music-app-broker
       namespace: music-app-kafka
       listener: console
