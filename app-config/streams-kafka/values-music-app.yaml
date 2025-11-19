@@ -15,7 +15,7 @@ cluster:
       networkPolicyPeers:
         - namespaceSelector:
             matchLabels:
-              kubernetes.io/metadata.name: movies-app
+              kubernetes.io/metadata.name: music-app
     - name: console
       port: 9094
       type: internal

@@ -27,85 +27,85 @@ cluster:
             matchLabels:
               kubernetes.io/metadata.name: kafka-console
 
-nodePools:
-  - name: controller-node-pool
-    spec:
-      replicas: 3
-      roles:
-        - controller
-      resources: 
-        requests:
-          memory: 256Mi
-          cpu: 500m
-        limits:
-          memory: 1Gi
-          cpu: "1"
-      storage:
-        type: jbod
-        volumes:
-          - id: 0
-            type: persistent-claim
-            size: 2Gi
-            deleteClaim: false
-      # template:
-      #   pod:
-      #     affinity:
-      #       podAntiAffinity:
-      #         requiredDuringSchedulingIgnoredDuringExecution:
-      #           - labelSelector:
-      #               matchExpressions:
-      #                 - key: strimzi.io/pool-name
-      #                   operator: In
-      #                   values:
-      #                     - controller-node-pool
-      #             topologyKey: "kubernetes.io/hostname"
-      #     topologySpreadConstraints:
-      #       - maxSkew: 1
-      #         topologyKey: topology.kubernetes.io/zone
-      #         whenUnsatisfiable: DoNotSchedule
-      #         labelSelector:
-      #           matchLabels:
-      #             strimzi.io/name: movies-app-broker
-      #             strimzi.io/pool-name: controller-node-pool
-  - name: broker-node-pool
-    spec:
-      replicas: 3
-      roles:
-        - broker
-      resources: 
-        requests:
-          memory: 256Mi
-          cpu: 500m
-        limits:
-          memory: 1Gi
-          cpu: "1"
-      storage:
-        type: jbod
-        volumes:
-          - id: 0
-            type: persistent-claim
-            size: 10Gi
-            deleteClaim: false
-      # template:
-      #   pod:
-      #     affinity:
-      #       podAntiAffinity:
-      #         requiredDuringSchedulingIgnoredDuringExecution:
-      #           - labelSelector:
-      #               matchExpressions:
-      #                 - key: strimzi.io/pool-name
-      #                   operator: In
-      #                   values:
-      #                     - broker-node-pool
-      #             topologyKey: "kubernetes.io/hostname"
-      #     topologySpreadConstraints:
-      #       - maxSkew: 1
-      #         topologyKey: topology.kubernetes.io/zone
-      #         whenUnsatisfiable: DoNotSchedule
-      #         labelSelector:
-      #           matchLabels:
-      #             strimzi.io/name: movies-app-broker
-      #             strimzi.io/pool-name: broker-node-pool
+# nodePools:
+#   - name: controller-node-pool
+#     spec:
+#       replicas: 3
+#       roles:
+#         - controller
+#       resources: 
+#         requests:
+#           memory: 256Mi
+#           cpu: 500m
+#         limits:
+#           memory: 1Gi
+#           cpu: "1"
+#       storage:
+#         type: jbod
+#         volumes:
+#           - id: 0
+#             type: persistent-claim
+#             size: 2Gi
+#             deleteClaim: false
+#       # template:
+#       #   pod:
+#       #     affinity:
+#       #       podAntiAffinity:
+#       #         requiredDuringSchedulingIgnoredDuringExecution:
+#       #           - labelSelector:
+#       #               matchExpressions:
+#       #                 - key: strimzi.io/pool-name
+#       #                   operator: In
+#       #                   values:
+#       #                     - controller-node-pool
+#       #             topologyKey: "kubernetes.io/hostname"
+#       #     topologySpreadConstraints:
+#       #       - maxSkew: 1
+#       #         topologyKey: topology.kubernetes.io/zone
+#       #         whenUnsatisfiable: DoNotSchedule
+#       #         labelSelector:
+#       #           matchLabels:
+#       #             strimzi.io/name: movies-app-broker
+#       #             strimzi.io/pool-name: controller-node-pool
+#   - name: broker-node-pool
+#     spec:
+#       replicas: 3
+#       roles:
+#         - broker
+#       resources: 
+#         requests:
+#           memory: 256Mi
+#           cpu: 500m
+#         limits:
+#           memory: 1Gi
+#           cpu: "1"
+#       storage:
+#         type: jbod
+#         volumes:
+#           - id: 0
+#             type: persistent-claim
+#             size: 10Gi
+#             deleteClaim: false
+#       # template:
+#       #   pod:
+#       #     affinity:
+#       #       podAntiAffinity:
+#       #         requiredDuringSchedulingIgnoredDuringExecution:
+#       #           - labelSelector:
+#       #               matchExpressions:
+#       #                 - key: strimzi.io/pool-name
+#       #                   operator: In
+#       #                   values:
+#       #                     - broker-node-pool
+#       #             topologyKey: "kubernetes.io/hostname"
+#       #     topologySpreadConstraints:
+#       #       - maxSkew: 1
+#       #         topologyKey: topology.kubernetes.io/zone
+#       #         whenUnsatisfiable: DoNotSchedule
+#       #         labelSelector:
+#       #           matchLabels:
+#       #             strimzi.io/name: movies-app-broker
+#       #             strimzi.io/pool-name: broker-node-pool
 topics:
   - name: actors
     spec:
