@@ -3,19 +3,19 @@ kind: Console
 metadata:
   name: kafka-console
 spec:
-  hostname: console-kafka-console.apps.cluster-hh7wz.dynamic.redhatworkshops.io
+  hostname: console-kafka-console.apps-crc.testing
   security:
     oidc:
-      authServerUrl: https://keycloak-service.keycloak.svc:8443/realms/movies-app-broker-kafka/.well-known/openid-configuration
-      clientId: movies-app-broker-kafka-cli
+      authServerUrl: https://keycloak-service.keycloak.svc:8443/realms/openshift-oidc
+      clientId: kafka-console
       clientSecret:
-        value: kafka-cli-secret
+        value: shhh-kafka-console-secret
       trustStore:
         type: PEM
         content:
           valueFrom:
             secretKeyRef:
-              name: movies-app-broker-cert-issuer-secret
+              name: keycloak-tls-secret
               key: ca.crt
     subjects:
       - include:
@@ -32,13 +32,15 @@ spec:
           - resources:
               - kafkas
             resourceNames:
-              - movies-app-broker
+              - '*'
             privileges:
               - 'ALL'
       - name: administrators
         rules:
           - resources:
               - kafkas
+            resourceNames:
+              - '*'
             privileges:
               - 'ALL'
   kafkaClusters:
