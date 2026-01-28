@@ -1,0 +1,16 @@
+- op: add
+  path: /spec/kafka/listeners/-
+  value:
+    name: console
+    port: 9094
+    type: internal
+    tls: true
+    authentication:
+      type: scram-sha-512
+    networkPolicyPeers:
+      - namespaceSelector:
+          matchLabels:
+            kubernetes.io/metadata.name: kafka-console
+- op: add
+  path: /spec/kafka/authorization/superUsers/-
+  value: kafka-console

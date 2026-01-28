@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base/broker
+
+components:
+  - ../../components/single-node
+  - ../../components/plain-listener
+  - ../../components/kafka-console
+
+transformers:
+  - ../../base/transformers

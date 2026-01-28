@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base/broker
+
+components:
+  # - ../../components/keycloak-oidc
+  - ../../components/dual-role-node-pool
+  - ../../components/prometheus
+  - ../../components/kafka-console
+  - ../../components/kafka-cli
+  - ../../components/kafka-issuer
+  - ../../components/boca-topics
+
+transformers:
+  - ../../base/transformers
+  - ../../components/prometheus/transformers
+  - ../../components/kafka-issuer/transformers

@@ -1,3 +1,0 @@
-resources:
-  - Group_cluster-admins.yaml
-  - ClusterRoleBindings_cluster-admins-admin-group.yaml

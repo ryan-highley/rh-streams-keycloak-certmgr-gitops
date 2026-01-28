@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: console-dex
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: console-dex
+subjects:
+- kind: ServiceAccount
+  name: console-dex             # Service account assigned to the dex pod
+  namespace: kafka-console-dex  # The namespace dex is running in

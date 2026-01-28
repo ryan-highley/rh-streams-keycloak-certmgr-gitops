@@ -1,0 +1,19 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kafka-client-cert-issuer
+spec:
+  secretName: kafka-client-cert-issuer-secret
+  issuerRef:
+    name: cluster-issuer
+    kind: ClusterIssuer
+  privateKey:
+    algorithm: ECDSA
+  subject:
+    organizations:
+      - Multi-Cluster Kafka
+    organizationalUnits:
+      - Kafka Clients
+      - Issuer CA
+  commonName: kafka-client-ca
+  isCA: true

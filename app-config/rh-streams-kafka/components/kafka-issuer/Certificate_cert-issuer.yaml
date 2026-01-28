@@ -1,0 +1,11 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cert-issuer
+spec:
+  secretName: cert-issuer-secret
+  issuerRef:
+    name: cluster-issuer
+    kind: ClusterIssuer
+  commonName: PLACEHOLDER Kafka Cluster Issuer CA
+  isCA: true

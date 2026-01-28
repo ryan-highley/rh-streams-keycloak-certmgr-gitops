@@ -1,0 +1,37 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+resources:
+  - Certificate_cert-issuer.yaml
+  - Issuer_cert-issuer.yaml
+  - Certificate_kafka-client-cert.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+secretGenerator:
+  - name: kafka-client-cert-secret-keystore
+    behavior: create
+    type: Opaque
+    literals:
+      - password=not-terribly-secure
+
+
+      # components:
+      #   - ../components/client-issuer
+      #   - ../components/keycloak
+      # patches:
+      #   - target:
+      #       kind: Certificate
+      #       name: kafka-client-cert-issuer
+      #     patch: |-
+      #       - op: replace
+      #         path: /spec/commonName
+      #         value: boca-app-kafka-client-ca
+      #   - target:
+      #       kind: Certificate
+      #       name: kafka-client-cert
+      #     patch: |-
+      #       - op: replace
+      #         path: /spec/commonName
+      #         value: boca-app-kafka-client

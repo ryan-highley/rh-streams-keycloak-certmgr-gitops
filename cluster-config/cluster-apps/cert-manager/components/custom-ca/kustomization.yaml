@@ -1,0 +1,30 @@
+# This component still uses cert-manager to generate a self-signed root CA and
+# associated intermediate CA from which additional ClusterIssuers, Issuers, and
+# Certificates can be generated and managed. To use this properly, a Secret
+# named 'cluster-ca' containing certificates for an externally-managed CA must 
+# be created with the following keys:
+#
+#   - tls.crt: Public keys of the full certificate chain for the CA signing
+#              certificate in this order: issuer -> intermediate(s) -> root
+#   - tls.key: Private key of the CA issuer certificate, unencrypted
+#
+# This approach mimics the cert-manager CA Issuer configuration, but any other
+# cert-manager Issuer can be used instead (ACME, Vault, CyberArk, etc.) to
+# manage a signing certificate for the ClusterIssuer cluster-issuer to use.
+#
+# https://cert-manager.io/docs/configuration/ca/
+
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+resources:
+  - custom-ca-hack.yaml
+
+patches:
+  - target:
+      kind: ClusterIssuer
+      name: cluster-issuer
+    patch: |-
+      - op: replace
+        path: /spec/ca/secretName
+        value: custom-cluster-ca

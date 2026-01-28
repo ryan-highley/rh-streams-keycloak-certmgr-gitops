@@ -1,0 +1,12 @@
+resources:
+  - Console_kafka-console.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+secretGenerator:
+  - name: kafka-console-client-secret
+    behavior: create
+    type: Opaque
+    literals:
+      - clientSecret=shhh-kafka-console

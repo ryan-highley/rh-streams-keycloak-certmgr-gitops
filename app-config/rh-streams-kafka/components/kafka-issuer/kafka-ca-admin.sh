@@ -1,0 +1,24 @@
+#!/bin/sh
+
+cat /opt/cert/source/{tls.crt,ca.crt} >/tmp/ca.crt
+
+for CERT_CA in 'clients-ca' 'cluster-ca' ; do
+    oc create secret generic ${CLUSTER_NAME}-${CERT_CA}-cert --from-file=ca.crt=/tmp/ca.crt --dry-run='client' -o yaml | oc apply -f -
+
+    oc create secret generic ${CLUSTER_NAME}-${CERT_CA} --from-file=ca.key=/opt/cert/source/tls.key --dry-run='client' -o yaml | oc apply -f -
+
+    oc label secret ${CLUSTER_NAME}-${CERT_CA}-cert strimzi.io/kind=Kafka strimzi.io/cluster="${CLUSTER_NAME}"
+
+    oc label secret ${CLUSTER_NAME}-${CERT_CA} strimzi.io/kind=Kafka strimzi.io/cluster="${CLUSTER_NAME}"
+
+    CERT_GEN=$( oc get secret ${CLUSTER_NAME}-${CERT_CA}-cert -o jsonpath='{.metadata.annotations.strimzi\.io/ca-cert-generation}' 2>/dev/null )
+    if [[ -z ${CERT_GEN} ]]; then CERT_GEN='-1' ; fi
+    
+    oc annotate secret ${CLUSTER_NAME}-${CERT_CA}-cert strimzi.io/ca-cert-generation="$(( ++${CERT_GEN} ))"
+
+    KEY_GEN=$( oc get secret ${CLUSTER_NAME}-${CERT_CA} -o jsonpath='{.metadata.annotations.strimzi\.io/ca-key-generation}' 2>/dev/null )
+    if [[ -z ${KEY_GEN} ]]; then KEY_GEN='-1' ; fi
+
+    oc annotate secret ${CLUSTER_NAME}-${CERT_CA} strimzi.io/ca-key-generation="$(( ++${KEY_GEN} ))"
+
+done

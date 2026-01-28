@@ -1,0 +1,27 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: broker
+spec:
+  kafka:
+    authorization:
+      type: keycloak
+      clientId: broker-client
+      tokenEndpointUri: https://keycloak-service.keycloak.svc:8443/realms/PLACEHOLDER/protocol/openid-connect/token
+      tlsTrustedCertificates:
+        - secretName: cert-issuer-secret
+          certificate: ca.crt
+    listeners:
+      - name: tls
+        port: 9093
+        type: internal
+        tls: true
+        authentication:
+          type: oauth
+          validIssuerUri: https://keycloak-service.keycloak.svc:8443/realms/PLACEHOLDER
+          jwksEndpointUri: https://keycloak-service.keycloak.svc:8443/realms/PLACEHOLDER/protocol/openid-connect/certs
+          userNameClaim: preferred_username
+          maxSecondsWithoutReauthentication: 3600
+          tlsTrustedCertificates:
+            - secretName: cert-issuer-secret
+              certificate: ca.crt

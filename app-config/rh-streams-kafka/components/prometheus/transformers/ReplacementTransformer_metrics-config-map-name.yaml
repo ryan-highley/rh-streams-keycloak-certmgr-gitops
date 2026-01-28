@@ -1,0 +1,15 @@
+apiVersion: builtin
+kind: ReplacementTransformer
+metadata:
+  name: metrics-config-map-name-repl-xform
+replacements:
+  - source:
+      kind: ConfigMap
+      name: kafka-metrics
+      fieldPath: metadata.name
+    targets:
+      - select:
+          kind: Kafka
+          name: broker
+        fieldPaths:
+          - spec.kafka.metricsConfig.valueFrom.configMapKeyRef.name

@@ -1,0 +1,10 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: gateway.message.external-message
+  labels:
+    strimzi.io/cluster: PLACEHOLDER
+spec:
+  partitions: 6
+  config:
+    retention.ms: 3024000000

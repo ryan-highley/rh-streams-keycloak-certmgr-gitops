@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-client
+spec:
+  selector:
+    matchLabels:
+      app: kafka-client
+  template:
+    metadata:
+      labels:
+        app: kafka-client
+    spec:
+      containers:
+        - name: client
+          image: quay.io/strimzi/kafka:latest-kafka-4.0.0
+          resources:
+            requests:
+              cpu: 125m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+          command:
+            - /bin/sh
+            - -c
+          args:
+            - sleep infinity
+          env:
+            - name: STOREPASS
+              valueFrom:
+                secretKeyRef:
+                  name: kafka-cli
+                  key: user.password
+          volumeMounts:
+            - name: kafka-client-cert
+              readOnly: true
+              mountPath: /opt/kafka/client/cert
+            - name: kafka-client-config
+              readOnly: true
+              mountPath: /opt/kafka/client/config
+      volumes:
+        - name: kafka-client-cert
+          secret:
+            secretName: kafka-cli
+            defaultMode: 420
+        - name: kafka-client-config
+          secret:
+            secretName: kafka-client-config
+            defaultMode: 420

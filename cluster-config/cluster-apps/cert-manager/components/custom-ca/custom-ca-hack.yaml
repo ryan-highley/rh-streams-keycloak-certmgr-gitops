@@ -1,0 +1,46 @@
+# This hack sets up a "custom" CA with root and intermediate signing certs to
+# mimic a cert-manager CA Issuer configuration. 'T ain't pretty, but it works!
+# https://cert-manager.io/docs/configuration/ca/
+
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: custom-root-ca-issuer
+spec:
+  selfSigned: {}
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: custom-root-ca
+spec:
+  secretName: custom-root-ca
+  issuerRef:
+    name: custom-root-ca-issuer
+    kind: ClusterIssuer
+  commonName: Custom Root CA
+  isCA: true
+
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: custom-cluster-ca-issuer
+spec:
+  ca:
+     secretName: custom-root-ca
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: custom-cluster-ca
+spec:
+  secretName: custom-cluster-ca
+  issuerRef:
+    name: custom-cluster-ca-issuer
+    kind: ClusterIssuer
+  commonName: Custom Intermediate CA
+  isCA: true

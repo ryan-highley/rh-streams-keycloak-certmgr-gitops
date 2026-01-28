@@ -9,7 +9,7 @@ spec:
       authServerUrl: https://keycloak-service.keycloak.svc:8443/realms/openshift-oidc
       clientId: kafka-console
       clientSecret:
-        value: shhh-kafka-console-secret
+        value: IgjQ94l9Rou6HLattKv2M76h7tAkbZpC
       trustStore:
         type: PEM
         content:

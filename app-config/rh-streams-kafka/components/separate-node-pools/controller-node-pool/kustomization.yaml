@@ -1,0 +1,17 @@
+resources:
+  - ../../../base/node-pool
+
+patches:
+  - target:
+      kind: KafkaNodePool
+      name: node-pool
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: controller-node-pool
+      - op: replace
+        path: /spec/roles
+        value:
+          - controller
+    options:
+      allowNameChange: true

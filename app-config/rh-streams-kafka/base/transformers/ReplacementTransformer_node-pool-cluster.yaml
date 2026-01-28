@@ -1,0 +1,28 @@
+apiVersion: builtin
+kind: ReplacementTransformer
+metadata:
+  name: node-pool-cluster-name-repl-xform
+replacements:
+  - source:
+      kind: Kafka
+      name: broker
+      fieldPath: metadata.name
+    targets:
+      - select:
+          kind: KafkaNodePool
+        fieldPaths:
+          - metadata.labels.[strimzi.io/cluster]
+        options:
+          create: true
+      - select:
+          kind: KafkaUser
+        fieldPaths:
+          - metadata.labels.[strimzi.io/cluster]
+        options:
+          create: true
+      - select:
+          kind: KafkaTopic
+        fieldPaths:
+          - metadata.labels.[strimzi.io/cluster]
+        options:
+          create: true

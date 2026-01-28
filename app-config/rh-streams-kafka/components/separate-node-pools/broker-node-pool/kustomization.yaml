@@ -1,0 +1,17 @@
+resources:
+  - ../../../base/node-pool
+
+patches:
+  - target:
+      kind: KafkaNodePool
+      name: node-pool
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: broker-node-pool
+      - op: replace
+        path: /spec/roles
+        value:
+          - broker
+    options:
+      allowNameChange: true

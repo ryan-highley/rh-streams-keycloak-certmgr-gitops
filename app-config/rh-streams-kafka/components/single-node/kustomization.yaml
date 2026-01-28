@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+components:
+  - ../dual-role-node-pool
+
+patches:
+  - target:
+      kind: Kafka
+      name: broker
+    path: Kafka_broker.patch.yaml
+  - target:
+      kind: KafkaNodePool
+      name: node-pool
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1

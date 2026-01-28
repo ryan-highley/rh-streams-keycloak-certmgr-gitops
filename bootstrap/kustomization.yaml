@@ -1,4 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
 resources:
   - Namespace_openshift-gitops-operator.yaml
   - OperatorGroup_openshift-gitops-operator.yaml
   - Subscription_openshift-gitops-operator.yaml
+  - ClusterRole_openshift-gitops-argocd-secrets.yaml
+  - ClusterRoleBinding_openshift-gitops-argocd-secrets.yaml

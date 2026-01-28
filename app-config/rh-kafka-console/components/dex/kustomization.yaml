@@ -1,0 +1,20 @@
+resources:
+  - ClusterRole_kafka-console-dex.yaml
+  - ClusterRoleBinding_kafka-console-dex.yaml
+  - Secret_kafka-console-dex.yaml
+  - Deployment_kafka-console-dex.yaml
+  - Service_kafka-console-dex.yaml
+  - Ingress_kafka-console-dex.yaml
+
+components:
+  - ../openshift-oidc
+
+patches:
+  - path: Console_kafka-console.merge.yaml
+  - target:
+      kind: ServiceAccount
+      name: openshift-oidc-provider-sa
+    patch: |-
+      - op: add
+        path: /metadata/annotations/serviceaccounts.openshift.io~1oauth-redirecturi.dex
+        value: https://console-dex.apps-crc.testing/callback

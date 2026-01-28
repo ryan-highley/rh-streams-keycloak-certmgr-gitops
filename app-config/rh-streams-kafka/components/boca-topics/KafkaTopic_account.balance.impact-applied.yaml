@@ -1,0 +1,10 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: account.balance.impact-applied
+  labels:
+    strimzi.io/cluster: PLACEHOLDER
+spec:
+  partitions: 6
+  config:
+    retention.ms: 604800000

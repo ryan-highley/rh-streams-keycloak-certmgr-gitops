@@ -1,0 +1,37 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kafka-ca-admin
+spec:
+  selector: {}
+  template:
+    metadata:
+      name: processor
+    spec:
+      volumes:
+        - name: source-secret
+          secret:
+            secretName: cert-issuer-secret
+        - name: script-configmap
+          configMap:
+            name: kafka-ca-admin
+      serviceAccountName: kafka-ca-admin
+      securityContext:
+        runAsNonRoot: true
+      containers:
+        - name: processor
+          image: registry.redhat.io/openshift4/ose-cli:latest
+          volumeMounts:
+            - mountPath: /opt/cert/source
+              name: source-secret
+              readOnly: true
+            - mountPath: /opt/cert/script
+              name: script-configmap
+              readOnly: true
+          command:
+            - /bin/sh
+            - /opt/cert/script/kafka-ca-admin.sh
+          env:
+            - name: CLUSTER_NAME
+              value: PLACEHOLDER
+      restartPolicy: OnFailure

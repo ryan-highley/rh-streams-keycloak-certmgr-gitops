@@ -1,0 +1,14 @@
+resources:
+  - Console_kafka-console.yaml
+
+components:
+  - ../openshift-oidc
+
+patches:
+  - target:
+      kind: ServiceAccount
+      name: openshift-oidc-provider-sa
+    patch: |-
+      - op: add
+        path: /metadata/annotations/serviceaccounts.openshift.io~1oauth-redirecturi.keycloak
+        value: https://keycloak-service-keycloak.apps-crc.testing/realms/openshift-oidc/broker/openshift-v4/endpoint

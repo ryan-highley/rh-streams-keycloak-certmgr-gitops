@@ -1,0 +1,21 @@
+apiVersion: console.streamshub.github.com/v1alpha1
+kind: Console
+metadata:
+  name: console
+spec:
+  security:
+    oidc:
+      authServerUrl: https://console-dex.apps-crc.testing
+      clientId: kafka-console
+      clientSecret:
+        valueFrom:
+          secretKeyRef:
+            name: kafka-console-client-secret
+            key: clientSecret
+      trustStore:
+        type: PEM
+        content:
+          valueFrom:
+            configMapKeyRef:
+              name: kube-root-ca.crt
+              key: ca.crt

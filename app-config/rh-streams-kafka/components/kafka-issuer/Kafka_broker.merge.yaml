@@ -1,0 +1,9 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: broker
+spec:
+  clientsCa:
+    generateCertificateAuthority: false
+  clusterCa:
+    generateCertificateAuthority: false

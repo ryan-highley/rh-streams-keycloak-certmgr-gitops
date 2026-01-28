@@ -1,0 +1,9 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: kafka-cli
+  labels:
+    strimzi.io/cluster: PLACEHOLDER
+spec:
+  authentication:
+    type: tls
