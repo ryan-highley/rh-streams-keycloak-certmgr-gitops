@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: operators
+  name: cluster-config-operators
 spec:
   goTemplate: true
   goTemplateOptions:
@@ -9,15 +9,12 @@ spec:
   generators:
     - list:
         elements:
-          - name: amq-broker-rhel9
-            namespace: openshift-operators
-            path: app-config/components/operators/amq-broker-rhel9
-          - name: amq-streams
-            namespace: openshift-operators
-            path: app-config/components/operators/amq-streams
-          - name: streams-console
-            namespace: openshift-operators
-            path: app-config/components/operators/streams-console
+          - name: openshift-cert-manager
+            namespace: cert-manager-operator
+            path: cluster-config/components/operators/openshift-cert-manager
+          - name: rh-keycloak
+            namespace: keycloak
+            path: cluster-config/components/operators/rh-keycloak
   template:
     metadata:
       name: 'operators-{{.name}}'
