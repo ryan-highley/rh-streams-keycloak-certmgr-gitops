@@ -9,21 +9,15 @@ spec:
   generators:
     - list:
         elements:
-          - name: openshift-cert-manager
-            namespace: cert-manager-operator
-            path: cluster-config/components/operators/openshift-cert-manager
-          - name: rh-keycloak
-            namespace: keycloak
-            path: cluster-config/components/operators/rh-keycloak
           - name: amq-broker-rhel9
             namespace: openshift-operators
-            path: cluster-config/components/operators/amq-broker-rhel9
+            path: app-config/components/operators/amq-broker-rhel9
           - name: amq-streams
             namespace: openshift-operators
-            path: cluster-config/components/operators/amq-streams
+            path: app-config/components/operators/amq-streams
           - name: streams-console
             namespace: openshift-operators
-            path: cluster-config/components/operators/streams-console
+            path: app-config/components/operators/streams-console
   template:
     metadata:
       name: 'operators-{{.name}}'
