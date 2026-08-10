@@ -5,7 +5,7 @@ metadata:
     operators.coreos.com/rhbk-operator.keycloak: ''
   name: rhbk-operator
 spec:
-  channel: stable-v26.2
+  channel: stable-v26
   installPlanApproval: Automatic
   name: rhbk-operator
   source: redhat-operators
