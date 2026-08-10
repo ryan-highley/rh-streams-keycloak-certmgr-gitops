@@ -17,9 +17,9 @@ spec:
             path: app-config/apps/rh-streams-kafka/overlays/default
   template:
     metadata:
-      name: 'cluster-apps-{{.name}}'
+      name: 'apps-{{.name}}'
     spec:
-      project: cluster-config
+      project: app-config
       source:
         path: '{{.path}}'
         repoURL: https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops

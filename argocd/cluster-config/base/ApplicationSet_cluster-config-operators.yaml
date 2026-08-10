@@ -17,7 +17,7 @@ spec:
             path: cluster-config/components/operators/rh-keycloak
   template:
     metadata:
-      name: 'operators-{{.name}}'
+      name: 'cluster-config-operators-{{.name}}'
     spec:
       project: cluster-config
       source:
