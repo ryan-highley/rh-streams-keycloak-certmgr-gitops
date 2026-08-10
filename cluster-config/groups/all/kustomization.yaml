@@ -3,5 +3,3 @@ kind: Component
 components:
   - ../../components/operators/openshift-cert-manager
   - ../../components/operators/rh-keycloak
-  - ../../components/operators/amq-streams
-  - ../../components/operators/streams-console

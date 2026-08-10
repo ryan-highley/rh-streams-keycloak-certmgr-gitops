@@ -1,3 +1,5 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
 namespace: openshift-gitops
 resources:
   - ../../base
@@ -12,5 +14,3 @@ patches:
     target:
       kind: Application
       name: app-config
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization

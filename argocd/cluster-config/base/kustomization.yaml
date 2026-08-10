@@ -1,3 +1,5 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
 namespace: openshift-gitops
 resources:
   - AppProject_cluster-config.yaml
@@ -5,5 +7,3 @@ resources:
   - ApplicationSet_security.yaml
   - ApplicationSet_operators.yaml
   - ApplicationSet_cluster-apps.yaml
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization

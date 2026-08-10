@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: operators
+spec:
+  goTemplate: true
+  goTemplateOptions:
+    - missingkey=error
+  generators:
+    - list:
+        elements:
+          - name: openshift-cert-manager
+            namespace: cert-manager-operator
+            path: cluster-config/components/operators/openshift-cert-manager
+          - name: rh-keycloak
+            namespace: keycloak
+            path: cluster-config/components/operators/rh-keycloak
+          - name: amq-broker-rhel9
+            namespace: openshift-operators
+            path: cluster-config/components/operators/amq-broker-rhel9
+          - name: amq-streams
+            namespace: openshift-operators
+            path: cluster-config/components/operators/amq-streams
+          - name: streams-console
+            namespace: openshift-operators
+            path: cluster-config/components/operators/streams-console
+  template:
+    metadata:
+      name: 'operators-{{.name}}'
+    spec:
+      project: cluster-config
+      source:
+        path: '{{.path}}'
+        repoURL: https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops
+      destination:
+        namespace: '{{.namespace}}'
+        server: https://kubernetes.default.svc
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

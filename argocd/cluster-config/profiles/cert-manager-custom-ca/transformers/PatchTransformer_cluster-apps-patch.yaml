@@ -6,11 +6,11 @@ target:
   kind: ApplicationSet
   name: cluster-apps
 patch: |-
-  # Test that element 0 has the name 'cert-manager'
+  # Test that element 0 has the name 'openshift-cert-manager'
   - op: test
     path: /spec/generators/0/list/elements/0/name
-    value: cert-manager
+    value: openshift-cert-manager
   # Replace the path of element 0
   - op: replace
     path: /spec/generators/0/list/elements/0/path
-    value: cluster-config/cluster-apps/cert-manager/overlays/custom-ca
+    value: cluster-config/cluster-apps/openshift-cert-manager/overlays/custom-ca

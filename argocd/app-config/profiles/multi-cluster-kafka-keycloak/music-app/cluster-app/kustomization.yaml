@@ -1,4 +1,4 @@
-resources:
-  - Application_music-app-kafka.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+resources:
+  - Application_music-app-kafka.yaml

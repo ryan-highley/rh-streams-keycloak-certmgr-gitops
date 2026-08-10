@@ -9,12 +9,12 @@ spec:
   generators:
     - list:
         elements:
-          - name: cert-manager
+          - name: openshift-cert-manager
             namespace: cert-manager
-            path: cluster-config/cluster-apps/cert-manager/overlays/default
-          - name: keycloak
+            path: cluster-config/cluster-apps/openshift-cert-manager/overlays/default
+          - name: rh-keycloak
             namespace: keycloak
-            path: cluster-config/cluster-apps/keycloak/overlays/default
+            path: cluster-config/cluster-apps/rh-keycloak/overlays/default
   template:
     metadata:
       name: 'cluster-apps-{{.name}}'
