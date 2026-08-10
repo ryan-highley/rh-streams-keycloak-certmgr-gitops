@@ -1,7 +1,8 @@
-bases:
-- ../../base
 
 resources:
-- KafkaUser_registry.yaml
-- ApicurioRegistry_registry.yaml
-- Route_registry.yaml
+  - KafkaUser_registry.yaml
+  - ApicurioRegistry_registry.yaml
+  - Route_registry.yaml
+  - ../../base
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization

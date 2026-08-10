@@ -1,11 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-
 resources:
   - ../../base/broker
-
+# - ../../components/keycloak-oidc
 components:
-  # - ../../components/keycloak-oidc
   - ../../components/tls-authentication
   - ../../components/separate-node-pools
   - ../../components/prometheus
@@ -13,7 +11,6 @@ components:
   - ../../components/kafka-cli
   - ../../components/kafka-issuer
   - ../../components/boca-topics
-
 transformers:
   - ../../base/transformers
   - ../../components/prometheus/transformers

@@ -1,5 +1,7 @@
 resources:
-- Secret_broker-client.yaml
-- KafkaNodePool_node-pool.yaml
-- Kafka_broker.yaml
-- Certificate_broker-listeners.yaml
+  - Secret_broker-client.yaml
+  - KafkaNodePool_node-pool.yaml
+  - Kafka_broker.yaml
+  - Certificate_broker-listeners.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization

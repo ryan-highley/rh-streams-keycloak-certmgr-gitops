@@ -1,10 +1,8 @@
 resources:
   - ../../../base/node-pool
-
 patches:
-  - target:
-      kind: KafkaNodePool
-      name: node-pool
+  - options:
+      allowNameChange: true
     patch: |-
       - op: replace
         path: /metadata/name
@@ -13,5 +11,8 @@ patches:
         path: /spec/roles
         value:
           - broker
-    options:
-      allowNameChange: true
+    target:
+      kind: KafkaNodePool
+      name: node-pool
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization

@@ -1,15 +1,15 @@
 namespace: openshift-gitops
-
 resources:
   - ../../base
   - movies-app/
   - music-app/
-
 patches:
-  - target:
-      kind: Application
-      name: app-config
-    patch: |-
+  - patch: |-
       - op: replace
         path: /spec/source/path
         value: argocd/app-config/profiles/multi-cluster-kafka-keycloak
+    target:
+      kind: Application
+      name: app-config
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization

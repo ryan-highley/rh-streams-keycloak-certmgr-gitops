@@ -7,3 +7,5 @@ resources:
   - Deployment_kafka-console-dex.yaml
   - Service_kafka-console-dex.yaml
   - Ingress_kafka-console-dex.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization

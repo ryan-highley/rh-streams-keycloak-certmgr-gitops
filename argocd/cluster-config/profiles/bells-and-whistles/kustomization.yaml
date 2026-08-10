@@ -1,15 +1,15 @@
 resources:
   - ../../base
-
 patches:
-  - target:
-      kind: Application
-      name: cluster-config
-    patch: |-
+  - patch: |-
       - op: replace
         path: /spec/source/path
         value: argocd/cluster-config/profiles/bells-and-whistles
-
+    target:
+      kind: Application
+      name: cluster-config
 transformers:
   - ../keycloak-postgresql/transformers/
   - ../cert-manager-custom-ca/transformers/
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
