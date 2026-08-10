@@ -12,12 +12,6 @@ spec:
           - name: amq-broker-rhel9
             namespace: openshift-operators
             path: cluster-config/components/operators/amq-broker-rhel9
-          - name: openshift-cert-manager
-            namespace: cert-manager-operator
-            path: cluster-config/components/operators/openshift-cert-manager
-          - name: rh-keycloak
-            namespace: keycloak
-            path: cluster-config/components/operators/rh-keycloak
           - name: amq-streams
             namespace: openshift-operators
             path: cluster-config/components/operators/amq-streams
