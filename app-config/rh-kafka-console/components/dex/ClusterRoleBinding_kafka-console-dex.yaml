@@ -8,5 +8,5 @@ roleRef:
   name: console-dex
 subjects:
 - kind: ServiceAccount
-  name: console-dex             # Service account assigned to the dex pod
-  namespace: kafka-console-dex  # The namespace dex is running in
+  name: openshift-oidc-provider-sa    # Service account assigned to the dex pod
+  namespace: kafka-console-dex        # The namespace dex is running in

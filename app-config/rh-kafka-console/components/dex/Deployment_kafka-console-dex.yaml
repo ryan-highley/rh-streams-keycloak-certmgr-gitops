@@ -12,7 +12,7 @@ spec:
       labels:
         app: console-dex
     spec:
-      serviceAccountName: console-dex
+      serviceAccountName: openshift-oidc-provider-sa
       volumes:
       - name: config
         secret:
@@ -48,7 +48,7 @@ spec:
         - name: OPENSHIFT_OAUTH_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
-              name: console-dex-token
+              name: openshift-oidc-provider-token
               key: token
 
         readinessProbe:

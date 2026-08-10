@@ -10,9 +10,9 @@ spec:
     - list:
         elements:
           - name: htpass-auth
-            path: cluster-config/security/htpass-auth
+            path: cluster-config/components/security/htpass-auth
           - name: rbac
-            path: cluster-config/security/rbac
+            path: cluster-config/components/security/rbac
   template:
     metadata:
       name: 'security-{{.name}}'

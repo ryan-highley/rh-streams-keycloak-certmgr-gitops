@@ -13,4 +13,4 @@ patch: |-
   # Replace the path of element 1
   - op: replace
     path: /spec/generators/0/list/elements/1/path
-    value: cluster-config/cluster-apps/keycloak/overlays/keycloak-postgresql
+    value: cluster-config/cluster-apps/keycloak/overlays/postgresql

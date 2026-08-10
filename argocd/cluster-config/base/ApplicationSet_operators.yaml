@@ -9,14 +9,16 @@ spec:
   generators:
     - list:
         elements:
-          - name: amq-broker
-            path: cluster-config/operators/amq-broker/overlays/default
-          - name: cert-manager
-            path: cluster-config/operators/cert-manager/overlays/default
-          - name: keycloak
-            path: cluster-config/operators/keycloak/overlays/default
-          - name: streams-kafka
-            path: cluster-config/operators/streams-kafka/overlays/default
+          - name: amq-broker-rhel9
+            path: cluster-config/components/operators/amq-broker-rhel9
+          - name: openshift-cert-manager
+            path: cluster-config/components/operators/openshift-cert-manager
+          - name: rh-keycloak
+            path: cluster-config/components/operators/rh-keycloak
+          - name: amq-streams
+            path: cluster-config/components/operators/amq-streams
+          - name: streams-console
+            path: cluster-config/components/operators/streams-console
   template:
     metadata:
       name: 'operators-{{.name}}'
