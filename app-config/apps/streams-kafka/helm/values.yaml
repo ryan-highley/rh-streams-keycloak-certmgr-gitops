@@ -1,36 +1,59 @@
 
 cluster:
   name: broker
-  authorization:
-    type: simple
-  listeners:
-    - name: plain
-      port: 9092
-      type: internal
-      tls: false
-    - name: tls
-      port: 9093
-      type: internal
-      tls: true
-    - name: console
-      port: 9094
-      type: internal
-      tls: true
-      authentication:
-        type: scram-sha-512
-      networkPolicyPeers:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: kafka-console
-  config:
-    offsets.topic.replication.factor: 3
-    transaction.state.log.replication.factor: 3
-    transaction.state.log.min.isr: 2
-    default.replication.factor: 3
-    min.insync.replicas: 2
-    config.providers: env
-    config.providers.env.class: org.apache.kafka.common.config.provider.EnvVarConfigProvider
+  spec:
+    kafka:
+      authorization:
+        type: simple
+        superUsers:
+          CN=kafka-cli
+          kafka-console
+      listeners:
+        - name: plain
+          port: 9092
+          type: internal
+          tls: false
+        - name: tls
+          port: 9093
+          type: internal
+          tls: true
+        - name: console
+          port: 9094
+          type: internal
+          tls: true
+          authentication:
+            type: scram-sha-512
+          networkPolicyPeers:
+            - namespaceSelector:
+                matchLabels:
+                  kubernetes.io/metadata.name: kafka-console
+      metricsConfig:
+        type: jmxPrometheusExporter
+        valueFrom:
+          configMapKeyRef:
+            name: kafka-metrics
+            key: kafka-metrics-config.yml
+      config:
+        offsets.topic.replication.factor: 3
+        transaction.state.log.replication.factor: 3
+        transaction.state.log.min.isr: 2
+        default.replication.factor: 3
+        min.insync.replicas: 2
+        config.providers: env
+        config.providers.env.class: org.apache.kafka.common.config.provider.EnvVarConfigProvider
 
+    kafkaExporter:
+      topicRegex: ".*"
+      groupRegex: ".*"
+
+    clientsCa:
+      generateCertificateAuthority: false
+    clusterCa:
+      generateCertificateAuthority: false
+
+    entityOperator:
+      topicOperator: {}
+      userOperator: {}
 
 nodePools:
   - name: node-pool
@@ -39,7 +62,7 @@ nodePools:
       roles:
         - controller
         - broker
-      resources: 
+      resources:
         requests:
           memory: 256Mi
           cpu: 500m

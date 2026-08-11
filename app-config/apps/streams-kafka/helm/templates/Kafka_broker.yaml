@@ -1,5 +1,5 @@
 {{- with .Values.cluster -}}
-apiVersion: kafka.strimzi.io/v1beta2
+apiVersion: kafka.strimzi.io/v1
 kind: Kafka
 metadata:
   name: {{ .name }}
@@ -7,29 +7,5 @@ metadata:
     strimzi.io/node-pools: enabled
     strimzi.io/kraft: enabled
 spec:
-  kafka:
-    config:
-      {{- toYaml .config | nindent 6 }}
-    authorization:
-      {{- toYaml .authorization | nindent 6 }}
-    listeners:
-      {{- toYaml .listeners | nindent 6 }}
-    version: {{ .version | default "4.0.0" }}
-    metadataVersion: {{ .metadataVersion | default "4.0-IV3" }}
-    metricsConfig:
-      type: jmxPrometheusExporter
-      valueFrom:
-        configMapKeyRef:
-          name: kafka-metrics
-          key: kafka-metrics-config.yml
-  kafkaExporter:
-    topicRegex: ".*"
-    groupRegex: ".*"
-  clientsCa:
-    generateCertificateAuthority: false
-  clusterCa:
-    generateCertificateAuthority: false
-  entityOperator:
-    topicOperator: {}
-    userOperator: {}
+  {{- toYaml .spec | nindent 2 }}
 {{- end }}
