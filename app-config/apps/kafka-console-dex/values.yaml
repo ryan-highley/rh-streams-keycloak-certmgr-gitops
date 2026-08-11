@@ -1,0 +1,6 @@
+
+deployment:
+  name: console-dex
+  namespace: kafka-console-dex
+
+baseDomain: apps-crc.testing

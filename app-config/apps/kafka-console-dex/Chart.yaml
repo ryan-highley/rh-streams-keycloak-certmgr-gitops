@@ -1,0 +1,5 @@
+apiVersion: v2
+name: kafka-console-dex
+description: A Helm chart for deploying Dex to integrate OpenShift OAuth with Kafka Console
+type: application
+version: 0.1.0

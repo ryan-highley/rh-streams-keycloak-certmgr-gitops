@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: console-dex
+  name: "{{ .Values.deployment.name }}"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: console-dex
+      app: "{{ .Values.deployment.name }}"
   template:
     metadata:
       labels:
-        app: console-dex
+        app: "{{ .Values.deployment.name }}"
     spec:
-      serviceAccountName: console-dex
+      serviceAccountName: "{{ .Values.deployment.name }}"
       volumes:
       - name: config
         secret:
-          secretName: console-dex
+          secretName: "{{ .Values.deployment.name }}"
           items:
           - key: config.yaml
             path: config.yaml
@@ -44,11 +44,11 @@ spec:
 
         env:
         - name: OPENSHIFT_OAUTH_CLIENT_ID
-          value: system:serviceaccount:kafka-console-dex:console-dex
+          value: "system:serviceaccount:{{ .Values.deployment.namespace }}:{{ .Values.deployment.name }}"
         - name: OPENSHIFT_OAUTH_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
-              name: console-dex-token
+              name: "{{ .Values.deployment.name }}-token"
               key: token
 
         readinessProbe:
@@ -64,4 +64,3 @@ spec:
           limits:
             cpu: 500m
             memory: 512Mi
-

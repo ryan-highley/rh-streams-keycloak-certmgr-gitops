@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: '{{ .Values.deployment.name }}'
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: '{{ .Values.deployment.name }}'
+subjects:
+- kind: ServiceAccount
+  name: '{{ .Values.deployment.name }}'            # Service account assigned to the dex pod
+  namespace: '{{ .Values.deployment.namespace }}'  # The namespace dex is running in
