@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: step-certificates
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: step-ca
+    server: https://kubernetes.default.svc
+  project: app-config
+  source:
+    repoURL: https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops
+    path: app-config/apps/step-ca-acme
+    targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - RespectIgnoreDifferences=true
+  ignoreDifferences:
+    - group: '*'
+      kind: Application
+      namespace: '*'
+      jsonPointers:
+        - /spec/syncPolicy/automated
+        - /metadata/annotations/argocd.argoproj.io~1refresh
+        - /operation

@@ -5,4 +5,4 @@ resources:
   - AppProject_app-config.yaml
   - Application_app-config.yaml
   - ApplicationSet_app-config-operators.yaml
-  - ApplicationSet_smallstep.yaml
+  - Application_step-certificates.yaml

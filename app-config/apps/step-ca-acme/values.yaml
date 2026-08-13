@@ -1,0 +1,36 @@
+step-certificates:
+  ca:
+    name: OpenShift Internal CA
+    address: ':9000'
+    init:
+      containerSecurityContext:
+        seccompProfile:
+          type: RuntimeDefault
+    containerSecurityContext:
+      seccompProfile:
+        type: RuntimeDefault
+
+  podSecurityContext:
+    seccompProfile:
+      type: RuntimeDefault
+
+  service:
+    port: 9000
+
+  image:
+    repository: smallstep/step-ca
+    tag: latest
+
+  bootstrap:
+    enabled: true
+    secrets: true
+    configmaps: true
+    image:
+      repository: smallstep/step-ca-bootstrap
+      tag: latest
+    containerSecurityContext:
+      seccompProfile:
+        type: RuntimeDefault
+
+  serviceaccount:
+    create: true
