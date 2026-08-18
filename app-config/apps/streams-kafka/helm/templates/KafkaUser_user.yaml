@@ -1,11 +1,11 @@
-{{- range .Values.users }}
+{{- range .Values.global.users }}
 ---
 apiVersion: kafka.strimzi.io/v1
 kind: KafkaUser
 metadata:
   name: {{ .name }}
   labels:
-    strimzi.io/cluster: {{ $.Values.cluster.name }}
+    strimzi.io/cluster: {{ $.Values.global.cluster.name }}
 spec:
   {{- toYaml .spec | nindent 2 }}
 {{- end }}

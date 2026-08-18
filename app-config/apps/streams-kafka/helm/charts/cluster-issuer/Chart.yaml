@@ -1,0 +1,5 @@
+apiVersion: v2
+name: cluster-issuer
+description: A Helm chart for using a cert-manager Issuer to populate Strimzi cluster-ca and client-ca Secrets
+type: application
+version: 0.1.0
