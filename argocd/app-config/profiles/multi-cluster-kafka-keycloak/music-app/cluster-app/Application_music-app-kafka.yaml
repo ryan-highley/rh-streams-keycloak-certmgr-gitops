@@ -11,14 +11,47 @@ spec:
     server: https://kubernetes.default.svc
   project: music-app
   source:
-    path: app-config/streams-kafka
+    path: app-config/apps/streams-kafka
     repoURL: https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops
     helm:
       namespace: music-app-kafka
       releaseName: music-app
       valuesObject:
+
+        global:
+          cluster:
+            name: music-app-broker
+
         cluster:
-          name: music-app-broker
+          spec:
+            kafka:
+              authorization:
+                type: simple
+                superUsers:
+                  - CN=kafka-cli
+                  - kafka-console
+              listeners:
+                - name: tls
+                  port: 9093
+                  type: internal
+                  tls: true
+                  authentication:
+                    type: tls
+                  networkPolicyPeers:
+                    - namespaceSelector:
+                        matchLabels:
+                          kubernetes.io/metadata.name: music-app
+                - name: console
+                  port: 9094
+                  type: internal
+                  tls: true
+                  authentication:
+                    type: scram-sha-512
+                  networkPolicyPeers:
+                    - namespaceSelector:
+                        matchLabels:
+                          kubernetes.io/metadata.name: kafka-console
+
         topics:
           - name: albums
             spec:
@@ -40,8 +73,10 @@ spec:
             spec:
               replicas: 3
               partitions: 48
+
         clientApp:
           namespace: music-app
+
   syncPolicy:
     automated:
       prune: true

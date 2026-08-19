@@ -11,35 +11,138 @@ spec:
     server: https://kubernetes.default.svc
   project: movies-app
   source:
-    path: app-config/streams-kafka
+    path: app-config/apps/streams-kafka
     repoURL: https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops
     helm:
       namespace: movies-app-kafka
       releaseName: movies-app
       valuesObject:
+
+        keycloak:
+          enabled: true
+
+        global:
+          cluster:
+            name: movies-app-broker
+
         cluster:
-          name: movies-app-broker
-          authorization:
-            type: keycloak
-            clientId: movies-app-broker-client
-            tokenEndpointUri: https://keycloak-service.keycloak.svc:8443/realms/movies-app-broker-kafka/protocol/openid-connect/token
-            tlsTrustedCertificates:
-              - secretName: movies-app-broker-cert-issuer-secret
-                certificate: ca.crt
-          listeners:
-            - name: tls
-              port: 9093
-              type: internal
-              tls: true
-              authentication:
-                type: oauth
-                validIssuerUri: https://keycloak-service.keycloak.svc:8443/realms/movies-app-broker-kafka
-                jwksEndpointUri: https://keycloak-service.keycloak.svc:8443/realms/movies-app-broker-kafka/protocol/openid-connect/certs
-                userNameClaim: preferred_username
-                maxSecondsWithoutReauthentication: 3600
+          spec:
+            kafka:
+              authorization:
+                type: keycloak
+                clientId: movies-app-broker-client
+                tokenEndpointUri: https://keycloak-service.keycloak.svc:8443/realms/movies-app-broker-kafka/protocol/openid-connect/token
                 tlsTrustedCertificates:
                   - secretName: movies-app-broker-cert-issuer-secret
                     certificate: ca.crt
+              listeners:
+                - name: tls
+                  port: 9093
+                  type: internal
+                  tls: true
+                  authentication:
+                    type: oauth
+                    validIssuerUri: https://keycloak-service.keycloak.svc:8443/realms/movies-app-broker-kafka
+                    jwksEndpointUri: https://keycloak-service.keycloak.svc:8443/realms/movies-app-broker-kafka/protocol/openid-connect/certs
+                    userNameClaim: preferred_username
+                    maxSecondsWithoutReauthentication: 3600
+                    tlsTrustedCertificates:
+                      - secretName: movies-app-broker-cert-issuer-secret
+                        certificate: ca.crt
+                  networkPolicyPeers:
+                    - namespaceSelector:
+                        matchLabels:
+                          kubernetes.io/metadata.name: movies-app
+                - name: console
+                  port: 9094
+                  type: internal
+                  tls: true
+                  authentication:
+                    type: scram-sha-512
+                  networkPolicyPeers:
+                    - namespaceSelector:
+                        matchLabels:
+                          kubernetes.io/metadata.name: kafka-console
+
+        # nodePools:
+        #   - name: controller-node-pool
+        #     spec:
+        #       replicas: 3
+        #       roles:
+        #         - controller
+        #       resources:
+        #         requests:
+        #           memory: 256Mi
+        #           cpu: 500m
+        #         limits:
+        #           memory: 1Gi
+        #           cpu: "1"
+        #       storage:
+        #         type: jbod
+        #         volumes:
+        #           - id: 0
+        #             type: persistent-claim
+        #             size: 2Gi
+        #             deleteClaim: false
+        #       # template:
+        #       #   pod:
+        #       #     affinity:
+        #       #       podAntiAffinity:
+        #       #         requiredDuringSchedulingIgnoredDuringExecution:
+        #       #           - labelSelector:
+        #       #               matchExpressions:
+        #       #                 - key: strimzi.io/pool-name
+        #       #                   operator: In
+        #       #                   values:
+        #       #                     - controller-node-pool
+        #       #             topologyKey: "kubernetes.io/hostname"
+        #       #     topologySpreadConstraints:
+        #       #       - maxSkew: 1
+        #       #         topologyKey: topology.kubernetes.io/zone
+        #       #         whenUnsatisfiable: DoNotSchedule
+        #       #         labelSelector:
+        #       #           matchLabels:
+        #       #             strimzi.io/name: movies-app-broker
+        #       #             strimzi.io/pool-name: controller-node-pool
+        #   - name: broker-node-pool
+        #     spec:
+        #       replicas: 3
+        #       roles:
+        #         - broker
+        #       resources:
+        #         requests:
+        #           memory: 256Mi
+        #           cpu: 500m
+        #         limits:
+        #           memory: 1Gi
+        #           cpu: "1"
+        #       storage:
+        #         type: jbod
+        #         volumes:
+        #           - id: 0
+        #             type: persistent-claim
+        #             size: 10Gi
+        #             deleteClaim: false
+        #       # template:
+        #       #   pod:
+        #       #     affinity:
+        #       #       podAntiAffinity:
+        #       #         requiredDuringSchedulingIgnoredDuringExecution:
+        #       #           - labelSelector:
+        #       #               matchExpressions:
+        #       #                 - key: strimzi.io/pool-name
+        #       #                   operator: In
+        #       #                   values:
+        #       #                     - broker-node-pool
+        #       #             topologyKey: "kubernetes.io/hostname"
+        #       #     topologySpreadConstraints:
+        #       #       - maxSkew: 1
+        #       #         topologyKey: topology.kubernetes.io/zone
+        #       #         whenUnsatisfiable: DoNotSchedule
+        #       #         labelSelector:
+        #       #           matchLabels:
+        #       #             strimzi.io/name: movies-app-broker
+        #       #             strimzi.io/pool-name: broker-node-pool
         topics:
           - name: actors
             spec:
@@ -61,8 +164,16 @@ spec:
             spec:
               replicas: 3
               partitions: 24
+
+        users:
+          - name: kafka-console
+            spec:
+              authentication:
+                type: scram-sha-512
+
         clientApp:
           namespace: movies-app
+
   syncPolicy:
     automated:
       prune: true
