@@ -3,6 +3,13 @@ kind: AppProject
 metadata:
   name: movies-app
 spec:
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: Namespace
+      name: movies-app
+    - group: '*'
+      kind: Namespace
+      name: movies-app-kafka
   destinations:
     - namespace: 'movies-app'
       server: https://kubernetes.default.svc
