@@ -29,6 +29,10 @@ spec:
 
         cluster:
           spec:
+            clientsCa:
+              generateCertificateAuthority: false
+            clusterCa:
+              generateCertificateAuthority: false
             kafka:
               authorization:
                 type: custom
