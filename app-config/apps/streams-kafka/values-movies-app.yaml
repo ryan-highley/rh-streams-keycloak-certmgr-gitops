@@ -1,31 +1,49 @@
+
+keycloak:
+  enabled: true
+
+global:
+  cluster:
+    name: movies-app-broker
+
 cluster:
-  name: movies-app-broker
-  authorization:
-    type: simple
-    superUsers:
-      - CN=kafka-cli
-      - kafka-console
-  listeners:
-    - name: tls
-      port: 9093
-      type: internal
-      tls: true
-      authentication:
-        type: tls
-      networkPolicyPeers:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: movies-app
-    - name: console
-      port: 9094
-      type: internal
-      tls: true
-      authentication:
-        type: scram-sha-512
-      networkPolicyPeers:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: kafka-console
+  spec:
+    kafka:
+      authorization:
+        type: keycloak
+        clientId: broker-client
+        tokenEndpointUri: https://keycloak-service.keycloak.svc:8443/realms/movies-app-broker-kafka/protocol/openid-connect/token
+        tlsTrustedCertificates:
+          - secretName: cert-issuer-secret
+            certificate: ca.crt
+      listeners:
+        - name: tls
+          port: 9093
+          type: internal
+          tls: true
+          authentication:
+            type: oauth
+            validIssuerUri: https://keycloak-service.keycloak.svc:8443/realms/movies-app-broker-kafka
+            jwksEndpointUri: https://keycloak-service.keycloak.svc:8443/realms/movies-app-broker-kafka/protocol/openid-connect/certs
+            userNameClaim: preferred_username
+            maxSecondsWithoutReauthentication: 3600
+            tlsTrustedCertificates:
+              - secretName: cert-issuer-secret
+                certificate: ca.crt
+          networkPolicyPeers:
+            - namespaceSelector:
+                matchLabels:
+                  kubernetes.io/metadata.name: movies-app
+        - name: console
+          port: 9094
+          type: internal
+          tls: true
+          authentication:
+            type: scram-sha-512
+          networkPolicyPeers:
+            - namespaceSelector:
+                matchLabels:
+                  kubernetes.io/metadata.name: kafka-console
 
 # nodePools:
 #   - name: controller-node-pool
@@ -33,7 +51,7 @@ cluster:
 #       replicas: 3
 #       roles:
 #         - controller
-#       resources: 
+#       resources:
 #         requests:
 #           memory: 256Mi
 #           cpu: 500m
@@ -72,7 +90,7 @@ cluster:
 #       replicas: 3
 #       roles:
 #         - broker
-#       resources: 
+#       resources:
 #         requests:
 #           memory: 256Mi
 #           cpu: 500m
@@ -127,6 +145,12 @@ topics:
     spec:
       replicas: 3
       partitions: 24
+
+users:
+  - name: kafka-console
+    spec:
+      authentication:
+        type: scram-sha-512
 
 clientApp:
   namespace: movies-app

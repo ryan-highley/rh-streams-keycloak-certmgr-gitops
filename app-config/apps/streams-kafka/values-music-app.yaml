@@ -1,31 +1,36 @@
+global:
+  cluster:
+    name: music-app-broker
+
 cluster:
-  name: music-app-broker
-  authorization:
-    type: simple
-    superUsers:
-      - CN=kafka-cli
-      - kafka-console
-  listeners:
-    - name: tls
-      port: 9093
-      type: internal
-      tls: true
-      authentication:
-        type: tls
-      networkPolicyPeers:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: music-app
-    - name: console
-      port: 9094
-      type: internal
-      tls: true
-      authentication:
-        type: scram-sha-512
-      networkPolicyPeers:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: kafka-console
+  spec:
+    kafka:
+      authorization:
+        type: simple
+        superUsers:
+          - CN=kafka-cli
+          - kafka-console
+      listeners:
+        - name: tls
+          port: 9093
+          type: internal
+          tls: true
+          authentication:
+            type: tls
+          networkPolicyPeers:
+            - namespaceSelector:
+                matchLabels:
+                  kubernetes.io/metadata.name: music-app
+        - name: console
+          port: 9094
+          type: internal
+          tls: true
+          authentication:
+            type: scram-sha-512
+          networkPolicyPeers:
+            - namespaceSelector:
+                matchLabels:
+                  kubernetes.io/metadata.name: kafka-console
 
 topics:
   - name: albums

@@ -1,4 +1,4 @@
-{{- range .Values.global.users }}
+{{- range .Values.users }}
 ---
 apiVersion: kafka.strimzi.io/v1
 kind: KafkaUser

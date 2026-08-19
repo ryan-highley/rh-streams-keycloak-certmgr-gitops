@@ -7,106 +7,108 @@ cluster-issuer:
 global:
   cluster:
     name: broker
+
+cluster:
+  spec:
+    kafka:
+      authorization:
+        type: simple
+        superUsers:
+          - CN=kafka-cli
+          - kafka-console
+      listeners:
+        - name: plain
+          port: 9092
+          type: internal
+          tls: false
+        - name: tls
+          port: 9093
+          type: internal
+          tls: true
+          authentication:
+            type: tls
+        - name: console
+          port: 9094
+          type: internal
+          tls: true
+          authentication:
+            type: scram-sha-512
+          networkPolicyPeers:
+            - namespaceSelector:
+                matchLabels:
+                  kubernetes.io/metadata.name: kafka-console
+      metricsConfig:
+        type: jmxPrometheusExporter
+        valueFrom:
+          configMapKeyRef:
+            name: kafka-metrics
+            key: kafka-metrics-config.yml
+      config:
+        offsets.topic.replication.factor: 3
+        transaction.state.log.replication.factor: 3
+        transaction.state.log.min.isr: 2
+        default.replication.factor: 3
+        min.insync.replicas: 2
+        config.providers: env
+        config.providers.env.class: org.apache.kafka.common.config.provider.EnvVarConfigProvider
+
+    kafkaExporter:
+      topicRegex: ".*"
+      groupRegex: ".*"
+
+    clientsCa:
+      generateCertificateAuthority: true
+    clusterCa:
+      generateCertificateAuthority: true
+
+    entityOperator:
+      topicOperator: {}
+      userOperator: {}
+
+nodePools:
+  - name: node-pool
     spec:
-      kafka:
-        authorization:
-          type: simple
-          superUsers:
-            - CN=kafka-cli
-            - kafka-console
-        listeners:
-          - name: plain
-            port: 9092
-            type: internal
-            tls: false
-          - name: tls
-            port: 9093
-            type: internal
-            tls: true
-            authentication:
-              type: tls
-          - name: console
-            port: 9094
-            type: internal
-            tls: true
-            authentication:
-              type: scram-sha-512
-            networkPolicyPeers:
-              - namespaceSelector:
-                  matchLabels:
-                    kubernetes.io/metadata.name: kafka-console
-        metricsConfig:
-          type: jmxPrometheusExporter
-          valueFrom:
-            configMapKeyRef:
-              name: kafka-metrics
-              key: kafka-metrics-config.yml
-        config:
-          offsets.topic.replication.factor: 3
-          transaction.state.log.replication.factor: 3
-          transaction.state.log.min.isr: 2
-          default.replication.factor: 3
-          min.insync.replicas: 2
-          config.providers: env
-          config.providers.env.class: org.apache.kafka.common.config.provider.EnvVarConfigProvider
+      replicas: 3
+      roles:
+        - controller
+        - broker
+      resources:
+        requests:
+          memory: 256Mi
+          cpu: 500m
+        limits:
+          memory: 1Gi
+          cpu: "1"
+      storage:
+        type: ephemeral
+# storage:
+#   type: jbod
+#   volumes:
+#     - id: 0
+#       type: persistent-claim
+#       size: 10Gi
+#       deleteClaim: false
 
-      kafkaExporter:
-        topicRegex: ".*"
-        groupRegex: ".*"
+topics:
+  - name: test-topic
+    spec:
+      replicas: 3
+      partitions: 12
+  - name: other-topic
+    spec:
+      replicas: 3
+      partitions: 6
 
-      clientsCa:
-        generateCertificateAuthority: true
-      clusterCa:
-        generateCertificateAuthority: true
+users:
+  - name: kafka-cli
+    spec:
+      authentication:
+        type: tls
+  - name: kafka-console
+    spec:
+      authentication:
+        type: scram-sha-512
 
-      entityOperator:
-        topicOperator: {}
-        userOperator: {}
-
-  nodePools:
-    - name: node-pool
-      spec:
-        replicas: 3
-        roles:
-          - controller
-          - broker
-        resources:
-          requests:
-            memory: 256Mi
-            cpu: 500m
-          limits:
-            memory: 1Gi
-            cpu: "1"
-        storage:
-          type: ephemeral
-  # storage:
-  #   type: jbod
-  #   volumes:
-  #     - id: 0
-  #       type: persistent-claim
-  #       size: 10Gi
-  #       deleteClaim: false
-
-  topics:
-    - name: test-topic
-      spec:
-        replicas: 3
-        partitions: 12
-    - name: other-topic
-      spec:
-        replicas: 3
-        partitions: 6
-
-  users:
-    - name: kafka-cli
-      spec:
-        authentication:
-          type: tls
-    - name: kafka-console
-      spec:
-        authentication:
-          type: scram-sha-512
-
-  clientApp:
-    namespace: kafka-client-app
-    networkPolicy: {}
+clientApp:
+  namespace: kafka-client-app
+  networkPolicy: {}

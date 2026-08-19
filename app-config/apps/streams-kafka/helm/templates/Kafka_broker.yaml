@@ -1,8 +1,8 @@
-{{- with .Values.global.cluster -}}
+{{- with .Values.cluster -}}
 apiVersion: kafka.strimzi.io/v1
 kind: Kafka
 metadata:
-  name: {{ .name }}
+  name: {{ $.Values.global.cluster.name }}
   annotations:
     strimzi.io/node-pools: enabled
     strimzi.io/kraft: enabled

@@ -1,4 +1,4 @@
-{{- range .Values.global.nodePools }}
+{{- range .Values.nodePools }}
 ---
 apiVersion: kafka.strimzi.io/v1
 kind: KafkaNodePool
