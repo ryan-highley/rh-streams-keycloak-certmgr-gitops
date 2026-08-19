@@ -49,10 +49,10 @@ spec:
                     - name: oauth-certs
                       secret:
                         secretName: movies-app-broker-cert-issuer-secret
-                  kafkaContainer:
-                    volumeMounts:
-                      - name: oauth-certs
-                        mountPath: /mnt/oauth-certs
+                kafkaContainer:
+                  volumeMounts:
+                    - name: oauth-certs
+                      mountPath: /mnt/oauth-certs
               listeners:
                 - name: tls
                   port: 9093
@@ -64,7 +64,7 @@ spec:
                     listenerConfig:
                       sasl.enabled.mechanisms: OAUTHBEARER
                       oauthbearer.sasl.server.callback.handler.class: io.strimzi.kafka.oauth.server.JaasServerOauthValidatorCallbackHandler
-                      oauthbearer.sasl.jaas.config: |-
+                      oauthbearer.sasl.jaas.config: >-
                         org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required
                         unsecuredLoginStringClaim_sub="thePrincipalName"
                         oauth.valid.issuer.uri="https://keycloak-service.keycloak.svc:8443/realms/movies-app-broker-kafka"
