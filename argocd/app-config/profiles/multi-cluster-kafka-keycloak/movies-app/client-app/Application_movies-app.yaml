@@ -11,7 +11,7 @@ spec:
     server: https://kubernetes.default.svc
   project: movies-app
   source:
-    path: app-config/apps/kafka-client
+    path: app-config/apps/kafka-cli-client/overlays/keycloak
     repoURL: https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops
     kustomize:
       patches:

@@ -11,8 +11,24 @@ spec:
     server: https://kubernetes.default.svc
   project: music-app
   source:
-    path: app-config/apps/kafka-client
+    path: app-config/apps/kafka-cli-client/overlays/default
     repoURL: https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops
+    kustomize:
+      patches:
+        - target:
+            kind: Certificate
+            name: kafka-client-cert-issuer
+          patch: |-
+            - op: replace
+              path: /spec/commonName
+              value: music-app-kafka-client-ca
+        - target:
+            kind: Certificate
+            name: kafka-client-cert
+          patch: |-
+            - op: replace
+              path: /spec/commonName
+              value: music-app-kafka-client
   syncPolicy:
     automated:
       prune: true
