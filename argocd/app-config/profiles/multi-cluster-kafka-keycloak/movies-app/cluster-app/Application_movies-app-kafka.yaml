@@ -20,6 +20,8 @@ spec:
 
         keycloak:
           enabled: true
+        cluster-issuer:
+          enabled: true
 
         global:
           cluster:
