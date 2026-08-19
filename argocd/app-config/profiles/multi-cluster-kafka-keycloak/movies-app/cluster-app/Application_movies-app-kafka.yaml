@@ -29,26 +29,48 @@ spec:
           spec:
             kafka:
               authorization:
-                type: keycloak
-                clientId: movies-app-broker-client
-                tokenEndpointUri: https://keycloak-service.keycloak.svc:8443/realms/movies-app-broker-kafka/protocol/openid-connect/token
-                tlsTrustedCertificates:
-                  - secretName: movies-app-broker-cert-issuer-secret
-                    certificate: ca.crt
+                type: custom
+                authorizerClass: io.strimzi.kafka.oauth.server.authorizer.KeycloakAuthorizer
+                superUsers:
+                  - kafka-console
+              config:
+                principal.builder.class: io.strimzi.kafka.oauth.server.OAuthKafkaPrincipalBuilder
+                strimzi.authorization.client.id: movies-app-broker-client
+                strimzi.authorization.token.endpoint.uri: https://keycloak-service.keycloak.svc:8443/realms/movies-app-broker-kafka/protocol/openid-connect/token
+                strimzi.authorization.ssl.endpoint.identification.algorithm: ""
+                strimzi.authorization.delegate.to.kafka.acl: "false"
+                strimzi.authorization.ssl.truststore.location: /mnt/oauth-certs/ca.crt
+                strimzi.authorization.ssl.truststore.type: PEM
+              template:
+                pod:
+                  volumes:
+                    - name: oauth-certs
+                      secret:
+                        secretName: movies-app-broker-cert-issuer-secret
+                  kafkaContainer:
+                    volumeMounts:
+                      - name: oauth-certs
+                        mountPath: /mnt/oauth-certs
               listeners:
                 - name: tls
                   port: 9093
                   type: internal
                   tls: true
                   authentication:
-                    type: oauth
-                    validIssuerUri: https://keycloak-service.keycloak.svc:8443/realms/movies-app-broker-kafka
-                    jwksEndpointUri: https://keycloak-service.keycloak.svc:8443/realms/movies-app-broker-kafka/protocol/openid-connect/certs
-                    userNameClaim: preferred_username
-                    maxSecondsWithoutReauthentication: 3600
-                    tlsTrustedCertificates:
-                      - secretName: movies-app-broker-cert-issuer-secret
-                        certificate: ca.crt
+                    type: custom
+                    sasl: true
+                    listenerConfig:
+                      sasl.enabled.mechanisms: OAUTHBEARER
+                      oauthbearer.sasl.server.callback.handler.class: io.strimzi.kafka.oauth.server.JaasServerOauthValidatorCallbackHandler
+                      oauthbearer.sasl.jaas.config: |-
+                        org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required
+                        unsecuredLoginStringClaim_sub="thePrincipalName"
+                        oauth.valid.issuer.uri="https://keycloak-service.keycloak.svc:8443/realms/movies-app-broker-kafka"
+                        oauth.jwks.endpoint.uri="https://keycloak-service.keycloak.svc:8443/realms/movies-app-broker-kafka/protocol/openid-connect/certs"
+                        oauth.username.claim="preferred_username"
+                        oauth.ssl.truststore.location="/mnt/oauth-certs/tls.crt"
+                        oauth.ssl.truststore.type="PEM";
+                      connections.max.reauth.ms: 3600
                   networkPolicyPeers:
                     - namespaceSelector:
                         matchLabels:
