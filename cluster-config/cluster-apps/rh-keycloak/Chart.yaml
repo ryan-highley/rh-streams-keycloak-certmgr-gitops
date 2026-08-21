@@ -1,0 +1,5 @@
+apiVersion: v2
+name: rh-keycloak
+description: A Helm chart for deploying an OpenShift-wide Keycloak instance
+type: application
+version: 0.1.0

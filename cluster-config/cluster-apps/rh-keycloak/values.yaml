@@ -1,0 +1,104 @@
+
+# All values are required unless otherwise documented. Nested values required with an
+# optional immediate parent are only required when their immediate parent value
+# is configured.
+
+# Enable Keycloak DB persistence (optional)
+persistence:
+
+  # Base name for DB persistence CRs
+  name: postgresql-db
+
+  # Image for DB Deployment
+  image: postgres:16
+
+  # Requested size of DB PVC
+  pvcSize: 20Gi
+
+  # Resource constraints for DB container (optional)
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 250m
+    limits:
+      memory: 512Mi
+      cpu: '1'
+
+  # Persistence credentials config
+  credentials:
+    # The Secret name for DB persistence credentials
+    secret: postgresql-credentials
+
+    # The Secret data when creating DB persistence credentials when INSTALLING this Chart (optional)
+    data:
+      # If 'data' map is empty or does not exist, the Secret name above is expected to
+      # be managed separately. Otherwise, a Secret will be created with the above name
+      # and the following key-value pairs.
+      # Empty Strings will be replaced with 32-character random alphanum values
+      POSTGRES_USER: ""
+      POSTGRES_PASSWORD: ""
+      POSTGRES_DB: keycloak
+
+  # Keycloak db spec
+  db:
+    vendor: postgres
+
+    host: postgresql-db.keycloak.svc
+    # Port (optional - default 5432)
+    # port: 5432
+
+    # Must match Secret value
+    database: keycloak
+
+    usernameSecret:
+      # Must match Secret name
+      name: postgresql-credentials
+      # Must be a key in the Secret named
+      key: POSTGRES_USER
+
+    passwordSecret:
+      # Must match Secret name
+      name: postgresql-credentials
+      # Must be a key in the Secret named
+      key: POSTGRES_PASSWORD
+
+# Keycloak TLS configuration for HTTPS (optional)
+tls:
+  # Name for both the Certificate and Secret
+  secret: keycloak-tls-secret
+  # cert-manager issuerRef for Certificate
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: cluster-issuer
+  # cert-manager Certificate spec minus secretName and issuerRef
+  certificate:
+    privateKey:
+      algorithm: ECDSA
+      size: 256
+    dnsNames:
+      - keycloak-service.keycloak.svc
+      - keycloak-service.keycloak.svc.cluster.local
+
+keycloak:
+  http:
+    tlsSecret: keycloak-tls-secret
+  #   httpEnabled: true
+  # ingress:
+  #   className: openshift-default
+  #   tlsSecret: keycloak-tls-secret
+
+  networkPolicy:
+    enabled: true
+
+  hostname:
+    hostname: https://keycloak-service-keycloak.apps-crc.testing
+    backchannelDynamic: true
+
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 250m
+    limits:
+      memory: 512Mi
+      cpu: '1'

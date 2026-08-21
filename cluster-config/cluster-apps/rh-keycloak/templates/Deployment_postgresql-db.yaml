@@ -1,0 +1,76 @@
+{{ with .Values.persistence }}
+---
+{{- if and .Release.IsInstall .credentials.data }}
+{{- with .credentials }}
+kind: Secret
+apiVersion: v1
+metadata:
+  name: {{ .secret }}
+data:
+  {{- range $key, $value := .data }}
+  {{ $key }}: {{ $value | default (randAlphaNum 32)  | b64enc | quote }}
+  {{- end }}
+type: Opaque
+---
+{{- end }}
+{{- end }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .name }}-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: {{ .pvcSize }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .name }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ .name }}
+    spec:
+      containers:
+        - name: {{ .name }}
+          image: {{ .image }}
+          ports:
+            - containerPort: {{ .db.port | default 5432 }}
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /data
+              name: data-volume
+          envFrom:
+            - secretRef:
+                name: {{ .credentials.secret }}
+                optional: false
+          env:
+            - name: PGDATA
+              value: /data/pgdata
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: {{ .name }}-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .name }}
+spec:
+  selector:
+    app: {{ .name }}
+  type: ClusterIP
+  ports:
+    - port: {{ .db.port | default 5432 }}
+      targetPort: {{ .db.port | default 5432 }}
+---
+{{- end }}
