@@ -11,7 +11,7 @@ spec:
     server: https://kubernetes.default.svc
   project: kafka-console
   source:
-    path: app-config/kafka-console-dex
+    path: app-config/apps/kafka-console-dex
     repoURL: https://github.com/ryan-highley/rh-streams-keycloak-certmgr-gitops
   syncPolicy:
     automated:

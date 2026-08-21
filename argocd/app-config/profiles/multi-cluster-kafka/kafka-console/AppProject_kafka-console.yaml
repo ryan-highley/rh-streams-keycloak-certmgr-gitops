@@ -6,6 +6,10 @@ spec:
   clusterResourceWhitelist:
     - group: '*'
       kind: Namespace
+      name: kafka-console
+    - group: '*'
+      kind: Namespace
+      name: kafka-console-dex
     - group: '*'
       kind: ClusterRole
     - group: '*'
