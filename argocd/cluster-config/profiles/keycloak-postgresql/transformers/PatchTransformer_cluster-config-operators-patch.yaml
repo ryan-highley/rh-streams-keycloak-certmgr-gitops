@@ -1,10 +1,10 @@
 apiVersion: builtin
 kind: PatchTransformer
 metadata:
-  name: keycloak-postgresql-cluster-apps-patch.yaml
+  name: keycloak-postgresql-cluster-config-operators-patch.yaml
 target:
   kind: ApplicationSet
-  name: cluster-apps
+  name: cluster-config-operators
 patch: |-
   # Add the rh-keycloak generator element
   - op: add
@@ -12,4 +12,4 @@ patch: |-
     value:
       name: rh-keycloak
       namespace: keycloak
-      path: cluster-config/cluster-apps/rh-keycloak
+      path: cluster-config/components/operators/rh-keycloak

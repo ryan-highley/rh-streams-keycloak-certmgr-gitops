@@ -12,9 +12,6 @@ spec:
           - name: openshift-cert-manager
             namespace: cert-manager-operator
             path: cluster-config/components/operators/openshift-cert-manager
-          - name: rh-keycloak
-            namespace: keycloak
-            path: cluster-config/components/operators/rh-keycloak
   template:
     metadata:
       name: 'cluster-config-operators-{{.name}}'
